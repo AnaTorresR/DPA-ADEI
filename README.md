@@ -9,8 +9,8 @@
   
 * Datos a utilizar 
 
-  * Número de registros: 215,000 al 17 de enero del 2020
-  * Número de columnas: 17
+  * **Número de registros:** 215,000 al 17 de enero del 2020
+  * **Número de columnas:** 17
     * Inspection ID: Identificador
     * DBA Name: Nombre del establecimiento 
     * AKA Name: Alias del establecimiento
@@ -30,7 +30,7 @@
     * Location: Latitud y longitud. 
      
 
-* Pregunta analítica a contestar con el modelo predictivo: ¿El establecimiento pasará la inspección?
+* **Pregunta analítica a contestar con el modelo predictivo:** ¿El establecimiento pasará la inspección?
 
 
-* Frecuencia de actualización de los datos: Esta base de datos se actualiza de manera diaria, sin embargo, para este proyecto los datos se estarán actualizando de manera semanal. 
+* **Frecuencia de actualización de los datos:** Esta base de datos se actualiza de manera diaria, sin embargo, para este proyecto los datos se estarán actualizando de manera semanal. 
