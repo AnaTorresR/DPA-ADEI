@@ -15,7 +15,7 @@
     * AKA Name: Alias del establecimiento
     * License #: Licencia del establecimiento 
     * Facility Type: Tipo de establecimiento, 500 diferentes tipos de establecimientos 
-    * Risk: Riesgo de no pasar la inspección 1: Alto, 2: Medio, 3: Bajo, Todos. La mayoría de las onspecciones tienen riesgo alto.
+    * Risk: Riesgo de no pasar la inspección 1: Alto, 2: Medio, 3: Bajo, Todos. La mayoría de las inspecciones tienen riesgo alto.
     * Address: Dirección del establecimiento 
     * City: Ciudad estadounidense a la que pertenece el establecimiento. 
     * State: Estado al que pertenece el establecimiento, la mayoría de las inspecciones se realizarón en el estado de Illinois, y con un registro en el estado de Nueva York, un registro en el estado de Indiana y un registro en el estado de Wisconsin.
