@@ -26,14 +26,15 @@
     |:----------|:-------------|:------|:----------|:-------------|:------|:----------|:-------------|:------|:------|
    
     * Risk: Cada establecimiento se clasifica según su riesgo de afectar negativamente a la salud pública.
+    
      |Clasificación del riesgo|Descripción|
-     |:--|:--|
-     |1| Alto|  
+     |:----|:----|
+     |1|Alto|  
      |2|Medio| 
      |3|Bajo|
-     |All|Todos|  	
-      
-        La frecuencia de inspección está ligada a este riesgo, siendo los establecimientos de riesgo 1 inspeccionados con mayor frecuencia y los de riesgo 3 con     menor frecuencia, la mayoría de las inspecciones tienen riesgo alto.
+     |All|Todos| 
+     
+         La frecuencia de inspección está ligada a este riesgo, siendo los establecimientos de riesgo 1 inspeccionados con mayor frecuencia y los de riesgo 3 con      menor frecuencia, la mayoría de las inspecciones tienen riesgo alto.
  
     * Address: Dirección del establecimiento 
     
@@ -46,8 +47,9 @@
     * Inspection Date: Fecha en la que se realizó la inspección, registros desde el 4 de enero del 2010 hasta el 15 de enero del 2021.
     
     * Inspection Type: Tipo de inspección, existen 110 tipos de inspección.
+    
      |Tipo de inspección|Descripción|
-     |:---|:---|
+     |:----|:----|
      |Sondeo|El tipo de inspección más común que se realiza con una frecuencia relativa al riesgo del establecimiento|
      |Consulta| Cuando la inspección se realiza a solicitud del propietario antes de la apertura del establecimiento|
      |Denuncia|Cuando la inspección se realiza en respuesta a una denuncia contra el establecimiento|
@@ -71,7 +73,8 @@
      ¨ Suposición del equipo
     
     * Violations: Un establecimiento puede recibir una o más de 45 infracciones distintas. Para cada número de infracción enumerado para un establecimiento determinado, se indica el requisito que el establecimiento debe cumplir para que No reciba una infracción, seguido de una descripción específica de los hallazgos que causaron la emisión de la infracción.
-     |Infracciones| 1-44 y 70|
+    
+     |Infracciones|1-44 y 70|
      |:---|:---|
     
     * Latitude: Coordenada geográfica, latitud del establecimiento.
