@@ -22,8 +22,8 @@
     
     * Facility Type: Tipo de establecimiento, 500 diferentes tipos de establecimientos. 
     
-         | Restaurante|Tienda de dulces|Panadería|Cafetería|
-         |:----------|:-------------|:------|:----------|
+         | Restaurante|Tienda de dulces|Panadería|Cafetería|...|
+         |:----------:|:-------------:|:------:|:----------:|:------:|
    
     * Risk: Cada establecimiento se clasifica según su riesgo de afectar negativamente a la salud pública.
     
@@ -75,7 +75,7 @@
     * Violations: Un establecimiento puede recibir una o más de 45 infracciones distintas. Para cada número de infracción enumerado para un establecimiento determinado, se indica el requisito que el establecimiento debe cumplir para que No reciba una infracción, seguido de una descripción específica de los hallazgos que causaron la emisión de la infracción.
     
         |Infracciones|1-44 y 70|
-        |:---|:---|
+        |:---:|:---:|
     
     * Latitude: Coordenada geográfica, latitud del establecimiento.
     
