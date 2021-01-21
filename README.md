@@ -61,16 +61,16 @@
     * Results: Resultado de la inspección
     
         |Resultado|Descripción|
-           |:---|:---|
-           |Pass|Establecimientos que no tenían violaciones críticas o graves. La mayoría de los establecimientos pasaron la inspección|
-           |Fail|Establecimientos que tenían violaciones críticas o graves que no se pudieron corregir durante la inspección. Un establecimiento que recibe una falla no significa necesariamente que la licencia del establecimiento esté suspendida.| 
-           |Pass w/ Conditions|Establecimientos que tenían violaciones críticas o graves, pero estas se corrigieron durante la inspección|
-           |Out of Business|Establecimientos que se encuentran fuera de servicio|
-           |No Entry|Establecimientos a los que no se pudieron entrar para realizar la inspección ^|
-           |Not Ready|Establecimientos cuyo resultado no está definido ^|
-           |Business Not Located|Establecimientos no ubicados|
+        |:---|:---|
+        |Pass|Establecimientos que no tenían violaciones críticas o graves. La mayoría de los establecimientos pasaron la inspección|
+        |Fail|Establecimientos que tenían violaciones críticas o graves que no se pudieron corregir durante la inspección. Un establecimiento que recibe una falla no significa necesariamente que la licencia del establecimiento esté suspendida.| 
+        |Pass w/ Conditions|Establecimientos que tenían violaciones críticas o graves, pero estas se corrigieron durante la inspección|
+        |Out of Business|Establecimientos que se encuentran fuera de servicio|
+        |No Entry|Establecimientos a los que no se pudieron entrar para realizar la inspección ^|
+        |Not Ready|Establecimientos cuyo resultado no está definido ^|
+        |Business Not Located|Establecimientos no ubicados|
      
-          ^ Suposición del equipo
+        ^ Suposición del equipo
     
     * Violations: Un establecimiento puede recibir una o más de 45 infracciones distintas. Para cada número de infracción enumerado para un establecimiento determinado, se indica el requisito que el establecimiento debe cumplir para que No reciba una infracción, seguido de una descripción específica de los hallazgos que causaron la emisión de la infracción.
     
