@@ -21,8 +21,10 @@
     * License #: Número único asignado al establecimiento por parte del Departamento de Asuntos Comerciales y Protección al Consumidor. 
     
     * Facility Type: Tipo de establecimiento, 500 diferentes tipos de establecimientos. 
-    | Restaurante	|Tienda de dulces	| Panadería| Cafetería | Taverna	|Guardería|Hospital|Licorería|Gasolinera|...|
-    |----------|:-------------:|------:||----------|:-------------:|------:||----------|:-------------:|------:|------:|
+    
+    | Restaurante|Tienda de dulces|Panadería|Cafetería|Taverna|Guardería|Hospital|Licorería|Gasolinera|...|
+    |:----------:|:-------------:|:------:|:----------:|:-------------:|:------:|:----------:|:-------------:|:------:|:------:|
+    
     * Risk: Cada establecimiento se clasifica según su riesgo de afectar negativamente a la salud pública.
      | 1 	| Alto|  
      | 2 	|Medio| 
