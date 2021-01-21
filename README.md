@@ -12,7 +12,7 @@
   * **Número de registros:** 215,130 al 15 de enero del 2021
   * **Número de columnas:** 17
  
-    * Inspection ID: Identificador
+    * Inspection ID: Identificador de la inspección
     
     * DBA Name: 'Doing business as', hace referencia al nombre legal del establecimiento
     
@@ -88,6 +88,9 @@
 
 
 * **Frecuencia de actualización de los datos:** Esta base de datos se actualiza cada viernes 
+
+
+* **Dueño de los datos:** Chicago Department of Public Health
 
 *Información obtenida de [Chicago data portal](https://data.cityofchicago.org/Health-Human-Services/Food-Inspections/4ijn-s7e5)*
 
