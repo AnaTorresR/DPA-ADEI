@@ -90,7 +90,8 @@ def convert_lower(data, vars_lower):
     """
     for i in vars_lower:
         data[i] = data[i].str.lower()
-    return data
+    return
+
 
 
 def count_data(data):
@@ -323,3 +324,12 @@ def data_profiling_date(data, date_vars):
     df_dateVar = pd.DataFrame(listDate).set_index("metricas").T
 
     return df_dateVar
+
+
+def number_formatter(number, pos=None):
+    """Convert a number into a human readable format."""
+    magnitude = 0
+    while abs(number) >= 1000:
+        magnitude += 1
+        number /= 1000.0
+    return '%.1f%s' % (number, ['', 'K', 'M', 'B', 'T', 'Q'][magnitude])
