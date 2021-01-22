@@ -93,3 +93,19 @@
 * **Dueño de los datos:** Chicago Department of Public Health
 
 *Información obtenida de [Chicago data portal](https://data.cityofchicago.org/Health-Human-Services/Food-Inspections/4ijn-s7e5)*
+
+
+* **Infraestructura del proyecto:**
+
+ * Se estará utilizando un entorno virtual _pyenv virtual env_ con la versión de Python 3.7.4
+ * Las librerías y sus dependencias que se utilizarán para este proyecto se encuentran en el archivo requirements.txt 
+
+* **Check points:**
+
+  * Checkpoint 1 (21-enero-2021): 
+   * Creación del repositorio y esqueleto del proyecto. 
+   * Creación de EDA/GDA  cuya ubicación se encuentra en  > notebooks/eda.
+     - Para poder reproducir este EDA se requiere cargar el script src/utils/utils_notebook/utils_eda.py
+     - Los datos exceden el tamaño permitido por GitHub, por lo que para poder reproducir este notebook se deberán de cargar dichos datos en una carpeta llamada  'data' ubicada en la raiz del repositorio. 
+     - Para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta notebooks/Boundaries - City
+   
