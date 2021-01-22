@@ -103,9 +103,18 @@
 * **Check points:**
 
   * Checkpoint 1 (21-enero-2021): 
-   * Creación del repositorio y esqueleto del proyecto. 
-   * Creación de EDA/GDA  cuya ubicación se encuentra en  > notebooks/eda.
-     - Para poder reproducir este EDA se requiere cargar el script src/utils/utils_notebook/utils_eda.py
-     - Los datos exceden el tamaño permitido por GitHub, por lo que para poder reproducir este notebook se deberán de cargar dichos datos en una carpeta llamada  'data' ubicada en la raiz del repositorio. 
-     - Para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta notebooks/Boundaries - City
+    * Creación del repositorio y esqueleto del proyecto. 
+    * Creación de EDA/GDA cuya ubicación se encuentra en
+   
+               notebooks/eda.
+               
+    - Para poder reproducir este EDA se requiere cargar el script
+     
+              src/utils/utils_notebook/utils_eda.py
+     
+    - Los datos exceden el tamaño permitido por GitHub, por lo que para poder reproducir este notebook se deberán de cargar dichos datos en una carpeta llamada  'data' ubicada en la raiz del repositorio. 
+    
+    - Para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta
+    
+               notebooks/Boundaries - City
    
