@@ -109,7 +109,7 @@
     * Creación del repositorio y esqueleto del proyecto. 
     * Creación de EDA/GDA cuya ubicación se encuentra en
    
-               notebooks/eda.
+               notebooks/eda.ipynb
                
     - Para poder reproducir este EDA se requiere cargar el script
      
@@ -122,12 +122,12 @@
                notebooks/Boundaries - City
    
   * Checkpoint 2 (23-febrero-2021):
-    * Creación de una cuenta de AWS
+    * Creación de cuenta en AWS
     * Creación de Bastión
     * Creación de usuarios en Bastión 
     * Creación del bucket S3 llamado `data-product-architecture-equipo-6`
     * Creación del script `src/utils/general.py` que contiene la función `get_s3_credentials()` que lee el archivo `conf/local/credentials.yaml`
     * Creación del script `src/pipeline/ingesta_almacenamiento.py`, que contiene las funciones `get_client`, `ingesta_inicial`, `get_s3_resource` y     `guardar_ingesta`
-    * Pequeño un resumen en este README.md explicando el proceso de ingestión
+    * Pequeño resumen en este README.md explicando el proceso de ingestión
     * Actualización de `requirements.txt`
-       
+    * Actualización de la gráfica *Porcentaje de riesgo* en el notebook llamado `eda.ipynb`      
