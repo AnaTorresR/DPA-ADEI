@@ -96,13 +96,15 @@
 
 
 * **Infraestructura del proyecto:**
-
+ 
  * Se estará utilizando un entorno virtual _pyenv virtual env_ con la versión de Python 3.7.4
  * Las librerías y sus dependencias que se utilizarán para este proyecto se encuentran en el archivo requirements.txt 
  
- 
 * **Proceso de ingestión:** 
 
+ Para poder realizar la ingestión de datos, tanto histórica como semanal, se deberá crear solicitar un token en la [API](https://dev.socrata.com/foundry/data.cityofchicago.org/4ijn-s7e5), una vez obtenido el tocken se realizan funciones para
+ 
+ 
 * **Check points:**
 
   * Checkpoint 1 (21-enero-2021): 
@@ -130,4 +132,4 @@
     * Creación del script `src/pipeline/ingesta_almacenamiento.py`, que contiene las funciones `get_client`, `ingesta_inicial`, `get_s3_resource` y     `guardar_ingesta`
     * Pequeño resumen en este README.md explicando el proceso de ingestión
     * Actualización de `requirements.txt`
-    * Actualización de la gráfica *Porcentaje de riesgo* en el notebook llamado `eda.ipynb`      
+    * Actualización de la gráfica *'Porcentaje de riesgo'* en el notebook llamado `eda.ipynb`      
