@@ -96,25 +96,40 @@
 
 
 * **Infraestructura del proyecto:**
-
+ 
  * Se estará utilizando un entorno virtual _pyenv virtual env_ con la versión de Python 3.7.4
  * Las librerías y sus dependencias que se utilizarán para este proyecto se encuentran en el archivo requirements.txt 
+ 
+* **Proceso de ingestión:** 
 
+ Para poder realizar la ingestión de datos, tanto histórica como semanal, se deberá crear solicitar un token en la [API](https://dev.socrata.com/foundry/data.cityofchicago.org/4ijn-s7e5), una vez obtenido el tocken se realizan funciones para
+ 
+ 
 * **Check points:**
 
   * Checkpoint 1 (21-enero-2021): 
     * Creación del repositorio y esqueleto del proyecto. 
     * Creación de EDA/GDA cuya ubicación se encuentra en
    
-               notebooks/eda.
+               notebooks/eda.ipynb
                
     - Para poder reproducir este EDA se requiere cargar el script
      
               src/utils/utils_notebook/utils_eda.py
      
-    - Los datos exceden el tamaño permitido por GitHub, por lo que para poder reproducir este notebook se deberán de cargar dichos datos en una carpeta llamada  'data' ubicada en la raiz del repositorio. 
+    - Los datos exceden el tamaño permitido por GitHub, por lo que para poder reproducir este notebook se deberán de cargar dichos datos en una carpeta llamada  `data` ubicada en la raiz del repositorio. 
     
     - Para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta
     
                notebooks/Boundaries - City
    
+  * Checkpoint 2 (23-febrero-2021):
+    * Creación de cuenta en AWS
+    * Creación de Bastión
+    * Creación de usuarios en Bastión 
+    * Creación del bucket S3 llamado `data-product-architecture-equipo-6`
+    * Creación del script `src/utils/general.py` que contiene la función `get_s3_credentials()` que lee el archivo `conf/local/credentials.yaml`
+    * Creación del script `src/pipeline/ingesta_almacenamiento.py`, que contiene las funciones `get_client`, `ingesta_inicial`, `get_s3_resource` y     `guardar_ingesta`
+    * Pequeño resumen en este README.md explicando el proceso de ingestión
+    * Actualización de `requirements.txt`
+    * Actualización de la gráfica *'Porcentaje de riesgo'* en el notebook llamado `eda.ipynb`      
