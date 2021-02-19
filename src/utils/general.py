@@ -14,9 +14,9 @@ def read_yaml_file(yaml_file):
     return config
 
 
-def get_api_credentials(credentials_file):
+def get_api_token(credentials_file):
     credentials = read_yaml_file(credentials_file)
-    api_creds = credentials['api_food']
+    api_creds = credentials['food_inspections']
     return api_creds
 
 
@@ -26,14 +26,15 @@ def get_s3_credentials(credentials_file):
     return s3_creds
 
 
-def load_pickle(path):
+def load_pickle_file(path):
     data_pkl = pickle.load(open(path, "rb"))
     return data_pkl
 
 
-def save_pickle(df, path):
+def save_pickle_file(df, path):
     # '/full/path/to/file'
     with open(path, 'wb') as f:
         pickle.dump(df, f)
         f.close()
     return
+
