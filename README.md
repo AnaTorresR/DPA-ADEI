@@ -87,49 +87,51 @@
 * **Pregunta analítica a contestar con el modelo predictivo:** ¿El establecimiento pasará la inspección?
 
 
-* **Frecuencia de actualización de los datos:** Esta base de datos se actualiza cada viernes 
+* **Frecuencia de actualización de los datos:** Esta base de datos se actualiza diariamente 
 
 
 * **Dueño de los datos:** Chicago Department of Public Health
 
-*Información obtenida de [Chicago data portal](https://data.cityofchicago.org/Health-Human-Services/Food-Inspections/4ijn-s7e5)*
+   *Información obtenida de [Chicago data portal](https://data.cityofchicago.org/Health-Human-Services/Food-Inspections/4ijn-s7e5)*
 
 
 * **Infraestructura del proyecto:**
  
- * Se estará utilizando un entorno virtual _pyenv virtual env_ con la versión de Python 3.7.4
- * Las librerías y sus dependencias que se utilizarán para este proyecto se encuentran en el archivo requirements.txt 
+   * Se estará utilizando un entorno virtual _pyenv virtual env_ con la versión de Python 3.7.4
+   * Las librerías y sus dependencias que se utilizarán para este proyecto se encuentran en el archivo requirements.txt 
+   * EL EDA/GDA de los datos se encuentra en la ruta `notebooks/eda.ipynb`, para poder reproducir este notebook se requiere cargar el script `src/utils/utils_notebook/utils_eda.py` y para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta `notebooks/Boundaries - City`
+   * En la [wiki](https://github.com/AnaTorresR/DPA-food_inspections/wiki/Bit%C3%A1cora) encontrarás una bitácora de las acciones realizadas en cada checkpoint, así como su fecha de entrega.
  
-* **Proceso de ingestión:** 
+* **Proceso de ingesta:** 
 
- Para poder realizar la ingestión de datos, tanto histórica como semanal, se deberá crear solicitar un token en la [API](https://dev.socrata.com/foundry/data.cityofchicago.org/4ijn-s7e5), una vez obtenido el tocken se realizan funciones para
- 
- 
-* **Check points:**
+ Para poder realizar la ingesta de datos, tanto histórica como semanal, se deberá solicitar un token en la [API](https://dev.socrata.com/foundry/data.cityofchicago.org/4ijn-s7e5), una vez obtenido el token este se deberá de guardar en la ruta `conf/local/credentials.yaml`, así como tus credenciales de aws para poder acceder a tu bucket s3, este archivo *credentials.yaml* debe ser creado de la siguiente manera: 
+     ---
+     s3: 
+      aws_access_key_id: "..."
+      aws_secret_access_key: "..."
+     food_inspections:
+      dataset_domain: "data.cityofchicago.org"
+      dataset_id: "4ijn-s7e5"
+      api_token: "tu token"
+      
+Para correr las funciones **ingesta_inicial** e **ingesta_consecutiva** ubicadas en la ruta `src/pipeline/ingesta_almacenamiento.py` deberás ejecutar en la raíz de este proyecto los siguientes comandos: 
 
-  * Checkpoint 1 (21-enero-2021): 
-    * Creación del repositorio y esqueleto del proyecto. 
-    * Creación de EDA/GDA cuya ubicación se encuentra en
-   
-               notebooks/eda.ipynb
-               
-    - Para poder reproducir este EDA se requiere cargar el script
+     - para ingesta_inicial:
      
-              src/utils/utils_notebook/utils_eda.py
+          creds = get_api_token('conf/local/credentials.yaml')
+          client = get_client(creds['dataset_domain'], creds['api_token'])
+          ingesta_inicial(client, creds['dataset_id'])
+          
+Esta función obtiene todos los registros que existen hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/initial/historic-inspections-aaaa-mm-dd.pkl` en tu bucket s3 (en nuestro caso el bucket que nosotros ocuparemos lleva el nombre de *'data-product-architecture-equipo-6'*)
      
-    - Los datos exceden el tamaño permitido por GitHub, por lo que para poder reproducir este notebook se deberán de cargar dichos datos en una carpeta llamada  `data` ubicada en la raiz del repositorio. 
-    
-    - Para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta
-    
-               notebooks/Boundaries - City
-   
-  * Checkpoint 2 (23-febrero-2021):
-    * Creación de cuenta en AWS
-    * Creación de Bastión
-    * Creación de usuarios en Bastión 
-    * Creación del bucket S3 llamado `data-product-architecture-equipo-6`
-    * Creación del script `src/utils/general.py` que contiene la función `get_s3_credentials()` que lee el archivo `conf/local/credentials.yaml`
-    * Creación del script `src/pipeline/ingesta_almacenamiento.py`, que contiene las funciones `get_client`, `ingesta_inicial`, `get_s3_resource` y     `guardar_ingesta`
-    * Pequeño resumen en este README.md explicando el proceso de ingestión
-    * Actualización de `requirements.txt`
-    * Actualización de la gráfica *'Porcentaje de riesgo'* en el notebook llamado `eda.ipynb`      
+     - para ingesta_consecutiva: 
+     
+          creds = get_api_token('conf/local/credentials.yaml')
+          client = get_client(creds['dataset_domain'], creds['api_token'])
+          ingesta_consecutiva(client, creds['dataset_id'])
+          
+Esta función extrae datos desde la última ingesta hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket, esta función se estará ejecutando semanalmente.
+  
+Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
+
+OJO: Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
