@@ -1,16 +1,13 @@
 import pandas as pd
 from sodapy import Socrata
+from datetime import date
+from datetime import timedelta
+import boto3
+import pickle
+from src.utils.general import get_s3_credentials
 
 
 def get_client(dataset_domain, token):
-    # domain_food = "data.cityofchicago.org"
-    # dataset_id = "4ijn-s7e5"
-    # limit_res = 2000
-
-    # Unauthenticated client only works with public data sets. Note 'None'
-    # in place of application token, and no username or password:
-    # client = Socrata(domain_food, None)
-
     # Example authenticated client (needed for non-public datasets):
     client = Socrata(dataset_domain, token)
 
@@ -18,18 +15,71 @@ def get_client(dataset_domain, token):
 
 
 def ingesta_inicial(client, dataset_id):
-    # First 2000 results, returned as JSON from API / converted to Python list of
+    # Returned as JSON from API / converted to Python list of
     # dictionaries by sodapy.
-    # results = client.get(dataset_id, limit=limit_res)
+
+    # se pasa el data_set identifier para obtener los datos
+    # regresa todos los registros que existan hasta el momento
+    # para este proyecto el data set cuenta con mas menos 216k de registros
+    print(dataset_id)
     results = client.get_all(dataset_id)
-    # Convert to pandas DataFrame
     results_df = pd.DataFrame.from_records(results)
-    return results_df
+
+    # Serializar objeto obtenido de resultados
+    obj_to_upload = pickle.dumps(results_df)
+
+    # configuración  para la carga en s3 bucket
+    bucket_name = "data-product-architecture-equipo-6"
+    bucket_path = "ingestion/initial/historic-inspections-{}.pkl".format(str(date.today()))
+    # file_name = bucket_path + path_pkl.split(sep='/')[-1]
+
+    # se llama a función guardar ingesta
+    guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+
+    return
+
+
+def ingesta_consecutiva(client, dataset_id, limit):
+    # se utiliza timedelta para restar 7 dias al dia de hoy
+    # para traer semanalmente los delta registros
+    today = date.today()
+    delta_date = today - timedelta(days=7)
+    print(delta_date)
+
+    # se hace un where con la seleccion de 7 dias antes para traer deltas
+    results = client.get(dataset_id, where="inspection_date >= '{}'".format(delta_date), limit=limit)
+    results_df = pd.DataFrame.from_records(results)
+
+    # Serializar objeto obtenido de resultados
+    obj_to_upload = pickle.dumps(results_df)
+
+    # configuración  para la carga en s3 bucket
+    bucket_name = "data-product-architecture-equipo-6"
+    bucket_path = "ingestion/consecutive/consecutive-inspections-{}.pkl".format(str(today))
+    # file_name = bucket_path + path_pkl.split(sep='/')[-1]
+
+    # se llama a función gradar ingesta
+    guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+
+    return
 
 
 def get_s3_resource():
-    pass
+    s3_creds = get_s3_credentials("../conf/local/credentials.yaml")
+    session = boto3.Session(
+        aws_access_key_id=s3_creds['aws_access_key_id'],
+        aws_secret_access_key=s3_creds['aws_secret_access_key']
+    )
+
+    return session.client('s3')
 
 
-def guardar_ingesta():
-    pass
+def guardar_ingesta(bucket_name, bucket_path, obj_to_upload):
+    s3_resource = get_s3_resource()
+
+    # accedemos a client desde el resource y se hace upload de documentos
+    # s3_resource.meta.client.upload_file(file_to_upload, bucket_name, bucket_path)
+    # esto es para guardar objetos
+    s3_resource.put_object(Bucket=bucket_name, Key=bucket_path, Body=obj_to_upload)
+
+    return
