@@ -87,7 +87,7 @@
 * **Pregunta analítica a contestar con el modelo predictivo:** ¿El establecimiento pasará la inspección?
 
 
-* **Frecuencia de actualización de los datos:** Esta base de datos se actualiza cada viernes 
+* **Frecuencia de actualización de los datos:** Esta base de datos se actualiza diariamente 
 
 
 * **Dueño de los datos:** Chicago Department of Public Health
