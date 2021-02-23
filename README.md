@@ -117,15 +117,15 @@
       
 Para correr las funciones **ingesta_inicial** e **ingesta_consecutiva** ubicadas en la ruta `src/pipeline/ingesta_almacenamiento.py` deberás ejecutar en la raíz de este proyecto los siguientes comandos: 
 
-     - para ingesta_inicial:
+   - para ingesta_inicial:
      
           creds = get_api_token('conf/local/credentials.yaml')
           client = get_client(creds['dataset_domain'], creds['api_token'])
           ingesta_inicial(client, creds['dataset_id'])
           
-Esta función obtiene todos los registros que existen hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/initial/historic-inspections-aaaa-mm-dd.pkl` en tu bucket s3 (en nuestro caso el bucket que nosotros ocuparemos lleva el nombre de *'data-product-architecture-equipo-6'*)
+Esta función obtiene todos los registros que existen hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/initial/historic-inspections-aaaa-mm-dd.pkl` en tu bucket s3. En nuestro caso el bucket que nosotros ocuparemos lleva el nombre de *'data-product-architecture-equipo-6'*, así definido en el script `src/utils/constants.py`, en tu caso deberás cambiar la constante *bucket_name* al nombre de tu bucket de la siguiente manera: `bucket_name = "nombre-de-tu-bucket"`
      
-     - para ingesta_consecutiva: 
+   - para ingesta_consecutiva: 
      
           creds = get_api_token('conf/local/credentials.yaml')
           client = get_client(creds['dataset_domain'], creds['api_token'])
