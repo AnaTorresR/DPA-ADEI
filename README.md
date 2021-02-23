@@ -111,28 +111,42 @@
       aws_access_key_id: "..."
       aws_secret_access_key: "..."
      food_inspections:
-      dataset_domain: "data.cityofchicago.org"
-      dataset_id: "4ijn-s7e5"
-      api_token: "tu token"
+      api_token: "..."
       
-Para correr las funciones **ingesta_inicial** e **ingesta_consecutiva** ubicadas en la ruta `src/pipeline/ingesta_almacenamiento.py` deberás ejecutar en la raíz de este proyecto los siguientes comandos: 
+También necesitarás el script `src/utils/constants.py` el cual contiene las siguientes constantes: 
+
+    bucket_name = "nombre-de-tu-bucket"
+    dataset_domain = "data.cityofchicago.org"
+    dataset_id = "4ijn-s7e5"
+    
+En nuestro caso el bucket que ocuparemos lleva el nombre de *'data-product-architecture-equipo-6'*, en tu caso deberás cambiar la constante *bucket_name* al nombre de tu bucket.
+
+Para correr las funciones **ingesta_inicial** e **ingesta_consecutiva** ubicadas en la ruta `src/pipeline/ingesta_almacenamiento.py` deberás ejecutar, mediante un script python en la raíz de este proyecto las siguientes funciones: 
 
    - para ingesta_inicial:
-     
-          creds = get_api_token('conf/local/credentials.yaml')
-          client = get_client(creds['dataset_domain'], creds['api_token'])
-          ingesta_inicial(client, creds['dataset_id'])
+  
+          from src.pipeline.ingesta_almacenamiento import *
+          from src.utils.general import * 
           
-Esta función obtiene todos los registros que existen hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/initial/historic-inspections-aaaa-mm-dd.pkl` en tu bucket s3. En nuestro caso el bucket que nosotros ocuparemos lleva el nombre de *'data-product-architecture-equipo-6'*, así definido en el script `src/utils/constants.py`, en tu caso deberás cambiar la constante *bucket_name* al nombre de tu bucket de la siguiente manera: `bucket_name = "nombre-de-tu-bucket"`
+          creds = get_api_token('conf/local/credentials.yaml')
+          client = get_client(creds['api_token'])
+          ingesta_inicial(client)
+          
+Esta función obtiene los registros históricos que existen hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/initial/historic-inspections-aaaa-mm-dd.pkl` en tu bucket s3. 
      
    - para ingesta_consecutiva: 
-     
-          creds = get_api_token('conf/local/credentials.yaml')
-          client = get_client(creds['dataset_domain'], creds['api_token'])
-          ingesta_consecutiva(client, creds['dataset_id'])
+   
+          from src.pipeline.ingesta_almacenamiento import *
+          from src.utils.general import * 
           
-Esta función extrae datos desde la última ingesta hasta el momento de su ejecución y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket, esta función se estará ejecutando semanalmente.
+          creds = get_api_token('conf/local/credentials.yaml')
+          client = get_client( creds['api_token'])
+          limit = 1000
+          ingesta_consecutiva(client, limit)
+          
+Esta función se estará ejecutando semanalmente, tomará la fecha del día de ejecución $(t)$ y se le restarán 7 días, lo cual extraerá los registros al tiempo 
+$(t-1)$ y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket. **Esto es debido a la forma de actualización de los datos que es a día vencido**
   
 Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
 
-OJO: Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
+**OJO:** Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
