@@ -122,6 +122,7 @@ También necesitarás el script `src/utils/constants.py` el cual contiene las si
 En nuestro caso el bucket que ocuparemos lleva el nombre de *'data-product-architecture-equipo-6'*, en tu caso deberás cambiar la constante *bucket_name* al nombre de tu bucket.
 
 Para correr las funciones **ingesta_inicial** e **ingesta_consecutiva** ubicadas en la ruta `src/pipeline/ingesta_almacenamiento.py` deberás tener tu ambiente virtual activado `pyenv activate tu-ambiente-virtual`. 
+
 Una vez activado tu ambiente deberás ejecutar en la raíz de este proyecto el comando `export PYTHONPATH=$PWD` esto es para que puedas importar las funciones que se encuentran el la carpeta *src/pipeline/ingesta_almacenamiento* y *src/utils/general*. 
 
 Finalmente, mediante un script python (en la raíz de este proyecto) deberás ejecutar las siguientes funciones: 
