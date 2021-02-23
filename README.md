@@ -108,10 +108,10 @@
  
      ---
      s3: 
-      aws_access_key_id: "..."
-      aws_secret_access_key: "..."
+      aws_access_key_id: "tu-access-key-id"
+      aws_secret_access_key: "tu-secret-acces-key"
      food_inspections:
-      api_token: "..."
+      api_token: "tu-token"
       
 También necesitarás el script `src/utils/constants.py` el cual contiene las siguientes constantes: 
 
@@ -144,8 +144,8 @@ Esta función obtiene los registros históricos que existen hasta el momento de 
           limit = 1000
           ingesta_consecutiva(client, limit)
           
-Esta función se estará ejecutando semanalmente, tomará la fecha del día de ejecución $(t)$ y se le restarán 7 días, lo cual extraerá los registros al tiempo 
-$(t-1)$ y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket. **Esto es debido a la forma de actualización de los datos que es a día vencido**
+Esta función se estará ejecutando semanalmente, tomará la fecha del día de ejecución (t) y se le restarán 7 días, lo cual extraerá los registros al tiempo 
+(t-1) y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket. **Esto es debido a la forma de actualización de los datos que es a día vencido**
   
 Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
 
