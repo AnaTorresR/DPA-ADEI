@@ -1,9 +1,9 @@
 import yaml
 import pickle
 
-
 def read_yaml_file(yaml_file):
     """ load yaml cofigurations """
+
     config = None
     try:
         with open(yaml_file, 'r') as f:
@@ -37,4 +37,3 @@ def save_pickle_file(df, path):
         pickle.dump(df, f)
         f.close()
     return
-

@@ -4,7 +4,7 @@ from datetime import date
 from datetime import timedelta
 import boto3
 import pickle
-from src.utils.general import get_s3_credentials
+from src.utils.general import *
 from src.utils import constants
 
 
@@ -27,7 +27,7 @@ def ingesta_inicial(client):
 
     # extraemos el dataset identifier de nuestro script src/utils/constants
     dataset_id = constants.dataset_id
-    print(dataset_id)
+    ###print(dataset_id)
     results = client.get_all(dataset_id)
     results_df = pd.DataFrame.from_records(results)
 
@@ -37,13 +37,13 @@ def ingesta_inicial(client):
     # configuración  para la carga en s3 bucket
     # bucket_name = "data-product-architecture-equipo-6"
     # se extrae el nombre del bucket de nuestro script src/utils/constants
-    bucket_name = constants.bucket_name
-    bucket_path = "ingestion/initial/historic-inspections-{}.pkl".format(str(date.today()))
+    ###bucket_name = constants.bucket_name
+    ###bucket_path = "ingestion/initial/historic-inspections-{}.pkl".format(str(date.today()))
 
     # se llama a función guardar ingesta
-    guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+    ###guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
 
-    return
+    return obj_to_upload
 
 
 def ingesta_consecutiva(client, limit):
@@ -66,20 +66,19 @@ def ingesta_consecutiva(client, limit):
     # configuración  para la carga en s3 bucket
     # bucket_name = "data-product-architecture-equipo-6"
     # se extrae el nombre del bucket de nuestro script src/utils/constants
-    bucket_name = constants.bucket_name
-    bucket_path = "ingestion/consecutive/consecutive-inspections-{}.pkl".format(str(today))
+    ###bucket_name = constants.bucket_name
+    ###bucket_path = "ingestion/consecutive/consecutive-inspections-{}.pkl".format(str(today))
 
     # se llama a función gradar ingesta
-    guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+    ###guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
 
-    return
-
+    return obj_to_upload
 
 def get_s3_resource():
-    s3_creds = get_s3_credentials("../conf/local/credentials.yaml")
+    s3_creds = get_s3_credentials('../conf/local/credentials.yaml')
     session = boto3.Session(
-        aws_access_key_id=s3_creds['aws_access_key_id'],
-        aws_secret_access_key=s3_creds['aws_secret_access_key']
+        aws_access_key_id=s3_creds["aws_access_key_id"],
+        aws_secret_access_key=s3_creds["aws_secret_access_key"]
     )
 
     return session.client('s3')
