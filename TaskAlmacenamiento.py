@@ -1,4 +1,6 @@
-# PYTHONPATH='.' luigi --module TaskAlmacenamiento Task2  --ingesta consecutiva --year 2021 --month MARZO
+# PYTHONPATH='.' luigi --module TaskAlmacenamiento Task2  --ingesta consecutiva --year 2021 --month 03 --day 14
+# PYTHONPATH='.' luigi --module TaskAlmacenamiento Task2  --ingesta historica --year 2021 --month 02 --day 18
+
 
 import os
 import luigi
@@ -17,6 +19,7 @@ class Task2(luigi.Task):
     ingesta = luigi.Parameter()
     year = luigi.Parameter()
     month = luigi.Parameter()
+    day = luigi.Parameter()
 
     def requires(self):
         return Task1(self.ingesta)
@@ -42,6 +45,12 @@ class Task2(luigi.Task):
 
     def output(self):
 
-        return luigi.local_target.\
-        LocalTarget('/Users/anatorres/Desktop/ITAM/DPA-food_inspections/luigi/YEAR={}/MONTH={}/ingesta_{}.csv'.\
-        format(self.year, str(self.month), self.ingesta))
+        if(self.ingesta == 'consecutiva'):
+            output_path = '/Users/anatorres/Desktop/ITAM/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-{}-{}-{}.pkl'.\
+            format(self.year, self.month, self.day)
+
+        if (self.ingesta == 'historica'):
+            output_path = '/Users/anatorres/Desktop/ITAM/data-product-architecture-equipo-6/ingestion/initial/historic-inspections-{}-{}-{}.pkl'.\
+            format(self.year, self.month, self.day)
+
+        return luigi.local_target.LocalTarget(path=output_path)

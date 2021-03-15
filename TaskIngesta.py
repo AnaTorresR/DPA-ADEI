@@ -1,4 +1,5 @@
 #PYTHONPATH='.' luigi --module TaskIngestas Task1 --local-scheduler --ingesta consecutiva
+#PYTHONPATH='.' luigi --module TaskIngestas Task1 --local-scheduler --ingesta historica
 
 import luigi
 
