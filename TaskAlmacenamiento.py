@@ -1,5 +1,5 @@
-# PYTHONPATH='.'  luigi --module TaskAlmacenamiento Task2 --local-scheduler   --ingesta consecutiva --year 2021 --month 03 --day 14
-# PYTHONPATH='.' luigi --module TaskAlmacenamiento Task2 --local-scheduler   --ingesta historica --year 2021 --month 02 --day 18
+# PYTHONPATH='.'  luigi --module TaskAlmacenamiento Task2 --ingesta consecutiva --year 2021 --month 03 --day 14
+# PYTHONPATH='.' luigi --module TaskAlmacenamiento Task2 --ingesta historica --year 2021 --month 02 --day 18
 
 
 import luigi
@@ -48,7 +48,7 @@ class Task2(luigi.Task):
             #output_path = '/Users/anatorres/Desktop/ITAM/DPA-food_inspections/luigi/consecutive-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
 
         if (self.ingesta == 'historica'):
-            output_path = 's3://data-product-architecture-equipo-6/ingestion/initial/historic-inspections-{}-{}-{}'.pkl.format(self.year, self.month, self.day)
+            output_path = 's3://data-product-architecture-equipo-6/ingestion/initial/historic-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
             #output_path = '/Users/anatorres/Desktop/ITAM//DPA-food_inspections/luigi/historic-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
 
         #return luigi.local_target.LocalTarget(path=output_path, format=luigi.format.Nop)
