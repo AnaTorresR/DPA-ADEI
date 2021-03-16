@@ -1,16 +1,50 @@
-#PYTHONPATH='.' luigi --module TaskIngestas Task1 --local-scheduler --ingesta consecutiva
-#PYTHONPATH='.' luigi --module TaskIngestas Task1 --local-scheduler --ingesta historica
+#PYTHONPATH='.' luigi --module TaskIngesta Task1 --local-scheduler --ingesta consecutiva --year 2021 --month 03 --day 15
+#PYTHONPATH='.' luigi --module TaskIngesta Task1 --local-scheduler --ingesta historica
 
 import luigi
+
+from src.pipeline.ingesta_almacenamiento import *
+from src.utils.general import *
 
 class Task1(luigi.Task):
 
     ingesta = luigi.Parameter()
+    year = luigi.Parameter()
+    month = luigi.Parameter()
+    day = luigi.Parameter()
+
 
     def run(self):
 
-        with self.output().open('w') as output_file:
-            output_file.write("La ingesta que deseas almacenar es {}".format(self.ingesta))
+        creds = get_api_token('conf/local/credentials.yaml')
+
+        client = get_client(creds['api_token'])
+
+        if (self.ingesta == 'consecutiva'):
+            limit = 1000
+            ingesta = ingesta_consecutiva(client, limit)
+
+        if (self.ingesta == 'historica'):
+            ingesta = ingesta_inicial(client)
+
+        else:
+            print('No such type of ingestion')
+
+        with self.output().open('wb') as output_file:
+            pickle.dump(ingesta, output_file)
+
 
     def output(self):
-        return luigi.local_target.LocalTarget('/Users/anatorres/Desktop/ITAM/DPA-food_inspections/ingesta_{}.csv'.format(self.ingesta))
+
+        if(self.ingesta == 'consecutiva'):
+            # output_path = s3://data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-{}-{}-{}.pkl.format(self.year, self.month, self.day)
+            output_path = '/Users/anatorres/Desktop/ITAM/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-{}-{}-{}.pkl'.\
+            format(self.year, self.month, self.day)
+
+        if (self.ingesta == 'historica'):
+            # output_path = s3://data-product-architecture-equipo-6/ingestion/initial/historic-inspections-{}-{}-{}.pkl.format(self.year, self.month, self.day)
+            output_path = '/Users/anatorres/Desktop/ITAM/data-product-architecture-equipo-6/ingestion/initial/historic-inspections-{}-{}-{}.pkl'.\
+            format(self.year, self.month, self.day)
+
+        return luigi.local_target.LocalTarget(path=output_path,
+         format=luigi.format.Nop)
