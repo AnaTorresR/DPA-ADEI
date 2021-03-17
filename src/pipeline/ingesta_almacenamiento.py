@@ -32,18 +32,18 @@ def ingesta_inicial(client):
     results_df = pd.DataFrame.from_records(results)
 
     # Serializar objeto obtenido de resultados
-    obj_to_upload = pickle.dumps(results_df)
+    # obj_to_upload = pickle.dumps(results_df)
 
     # configuración  para la carga en s3 bucket
     # bucket_name = "data-product-architecture-equipo-6"
     # se extrae el nombre del bucket de nuestro script src/utils/constants
-    bucket_name = constants.bucket_name
-    bucket_path = "ingestion/initial/historic-inspections-{}.pkl".format(str(date.today()))
+    # bucket_name = constants.bucket_name
+    # bucket_path = "ingestion/initial/historic-inspections-{}.pkl".format(str(date.today()))
 
     # se llama a función guardar ingesta
-    guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+    # guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
 
-    return
+    return results_df
 
 
 def ingesta_consecutiva(client, limit):
@@ -61,18 +61,18 @@ def ingesta_consecutiva(client, limit):
     results_df = pd.DataFrame.from_records(results)
 
     # Serializar objeto obtenido de resultados
-    obj_to_upload = pickle.dumps(results_df)
+    # obj_to_upload = pickle.dumps(results_df)
 
     # configuración  para la carga en s3 bucket
     # bucket_name = "data-product-architecture-equipo-6"
     # se extrae el nombre del bucket de nuestro script src/utils/constants
-    bucket_name = constants.bucket_name
-    bucket_path = "ingestion/consecutive/consecutive-inspections-{}.pkl".format(str(today))
+    # bucket_name = constants.bucket_name
+    # bucket_path = "ingestion/consecutive/consecutive-inspections-{}.pkl".format(str(today))
 
     # se llama a función gradar ingesta
-    guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+    # guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
 
-    return
+    return results_df
 
 
 def get_s3_resource():
