@@ -152,5 +152,34 @@ Esta función se estará ejecutando semanalmente, tomará la fecha del día de e
 (t-1) y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket. **Esto es debido a la forma de actualización de los datos que es a día vencido**
   
 Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
+ 
+* **LUIGI:** 
 
-**OJO:** Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
+ Se crearon dos módulos llamados _ingesta_task.py_, _almacenamiento_task.py_ ubicados en la paquetería `src/pipeline`. Estos módulos contienen las task llamadas _IngestaTask_ y _AlmacenamientoTask_ respectivamente. 
+ 
+ _ingesta_task.py_: Obtiene los datos de la API de Food Inspections y son guardados de manera local en formato .pkl
+ _almacenamiento_task.py_: Guarda el .pkl generado en el task anterior en tu bucket s3.
+ 
+ En una terminal activa tu pyenv y ejecuta el comando `luigid`, posteriormente en tu navegador escribe lo siguiente `localhost:8082`, así podrás ver la DAG de tus tasks.
+ 
+ En otra terminal, para poder ejecutar estos tasks deberás ubicarte en la raíz de este proyecto y ejecutar el siguiente comando con tu pyenv activado:
+ 
+ __Ingesta histórica:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta historica --year aaaa --month mm --day dd
+ 
+ __Ingesta consecutiva:__
+ 
+    PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta consecutiva --year aaaa --month mm --day dd
+    
+Si es la primera vez que ejecutas la ingesta histórica/consecutiva deberás indicar la fecha en la que estás ejecutando este task.
+
+Si únicamente deseas comprobar que tu ingesta histórica/consecutiva se encuentra en tu bucket s3 deberás indicar la fecha con la que se encuentra guardada esta ingesta.
+     
+__------------->__ Por la forma en la que está construida la task de ingesta consecutiva, para evitar la duplicación u omisión de observaciones. Se debe ejecutar cada 7 días a la misma hora, o si es la primera consecutiva, 7 días después de la histórica.      
+ 
+ * **DAG**
+ 
+  ![]()
+    
+ **OJO:** Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
