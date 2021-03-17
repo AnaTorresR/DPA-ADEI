@@ -1,3 +1,5 @@
 bucket_name = "data-product-architecture-equipo-6"
+initial_path = "ingestion/initial/historic-inspections"
+concecutive_path = "ingestion/consecutive/consecutive-inspections"
 dataset_domain = "data.cityofchicago.org"
 dataset_id = "4ijn-s7e5"
