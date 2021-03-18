@@ -180,6 +180,6 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  
  * **DAG**
  
-  ![]()
+  ![DAG](img/DAG-checkpoint-3.png)
     
  **OJO:** Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
