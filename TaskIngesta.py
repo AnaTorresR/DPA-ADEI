@@ -1,5 +1,5 @@
-#PYTHONPATH='.' luigi --module TaskIngesta Task1  --ingesta consecutiva --year 2021 --month 03 --day 15
-#PYTHONPATH='.' luigi --module TaskIngesta Task1  --ingesta historica --year 2021 --month 02 --day 18
+#PYTHONPATH='.' luigi --module TaskIngesta Task1 --ingesta consecutiva --year 2021 --month 03 --day 15
+#PYTHONPATH='.' luigi --module TaskIngesta Task1 --ingesta historica --year 2021 --month 02 --day 18
 
 import luigi
 

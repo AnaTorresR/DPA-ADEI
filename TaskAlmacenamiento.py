@@ -25,16 +25,15 @@ class Task2(luigi.Task):
 
     def run(self):
 
-        #path = '/Users/anatorres/Desktop/ITAM/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
+        path = '/Users/anatorres/Desktop/ITAM/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
 
-        #with open(path, 'rb') as input_file:
-        #    ingesta = pickle.load(input_file)
 
-        #with self.output().open('wb') as output_file:
-         #  pickle.dump(ingesta, output_file)
+        with open(path, 'r') as input_file:
+            ingesta = pickle.load(input_file)
 
-         with self.output().open('w') as output_file:
-            output_file.write("prueba")
+        with self.output().open('w') as output_file:
+           output_file.write(ingesta)
+
 
     def output(self):
 
@@ -45,11 +44,9 @@ class Task2(luigi.Task):
 
         if(self.ingesta == 'consecutiva'):
             output_path = 's3://data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
-            #output_path = '/Users/anatorres/Desktop/ITAM/DPA-food_inspections/luigi/consecutive-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
 
         if (self.ingesta == 'historica'):
             output_path = 's3://data-product-architecture-equipo-6/ingestion/initial/historic-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
-            #output_path = '/Users/anatorres/Desktop/ITAM//DPA-food_inspections/luigi/historic-inspections-{}-{}-{}.pkl'.format(self.year, self.month, self.day)
 
         #return luigi.local_target.LocalTarget(path=output_path, format=luigi.format.Nop)
         return luigi.contrib.s3.S3Target(path= output_path,
