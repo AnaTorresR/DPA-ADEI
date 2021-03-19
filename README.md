@@ -116,6 +116,8 @@
 También necesitarás el script `src/utils/constants.py` el cual contiene las siguientes constantes: 
 
     bucket_name = "nombre-de-tu-bucket"
+    initial_path = "ingestion/initial/historic-inspections"
+    concecutive_path = "ingestion/consecutive/consecutive-inspections"
     dataset_domain = "data.cityofchicago.org"
     dataset_id = "4ijn-s7e5"
     
