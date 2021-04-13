@@ -116,6 +116,8 @@
 También necesitarás el script `src/utils/constants.py` el cual contiene las siguientes constantes: 
 
     bucket_name = "nombre-de-tu-bucket"
+    initial_path = "ingestion/initial/historic-inspections"
+    concecutive_path = "ingestion/consecutive/consecutive-inspections"
     dataset_domain = "data.cityofchicago.org"
     dataset_id = "4ijn-s7e5"
     
@@ -157,7 +159,8 @@ Para que estas funcionas sean ejecutables se necesita del script `src/utils/gene
 
  Se crearon dos módulos llamados _ingesta_task.py_, _almacenamiento_task.py_ ubicados en la paquetería `src/pipeline`. Estos módulos contienen las task llamadas _IngestaTask_ y _AlmacenamientoTask_ respectivamente. 
  
- _ingesta_task.py_: Obtiene los datos de la API de Food Inspections y son guardados de manera local en formato .pkl
+ _ingesta_task.py_: Obtiene los datos de la API de Food Inspections y son guardados de manera local en formato .pkl. Estos datos son guardados de manera local en formato .pkl en la siguiente ruta `temp/data-product-architecture-equipo-6/ingestion/ 'la ingesta que corriste'/ 'la ingesta que corriste'-inspections-aaaa-mm-dd.pkl`. Esta carpeta es generada de manera automática por este task. 
+ 
  _almacenamiento_task.py_: Guarda el .pkl generado en el task anterior en tu bucket s3.
  
  En una terminal activa tu pyenv y ejecuta el comando `luigid`, posteriormente en tu navegador escribe lo siguiente `localhost:8082`, así podrás ver la DAG de tus tasks.
