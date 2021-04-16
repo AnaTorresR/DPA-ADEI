@@ -43,10 +43,26 @@ def get_db_conn(creds_file):
     )
     return connection
 
+def load_s3_object(creds_file, key):
+
+    s3_creds = get_s3_credentials(creds_file)
+
+    session = boto3.Session(
+    aws_access_key_id=s3_creds['aws_access_key_id'],
+    aws_secret_access_key=s3_creds['aws_secret_access_key']
+    )
+
+    s3 = session.client('s3')
+
+    response = s3.get_object(Bucket='data-product-architecture-equipo-6',
+    Key =key)
+    body = response['Body'].read()
+    df = pickle.loads(body)
+    return df
+
 def load_pickle_file(path):
     data_pkl = pickle.load(open(path, "rb"))
     return data_pkl
-
 
 def save_pickle_file(df, path):
     # '/full/path/to/file'

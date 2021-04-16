@@ -27,7 +27,7 @@ class IngestionMetadata(CopyToTable):
     port=credentials['port']
     database=credentials['db']
 
-    table = 'metadata'
+    table = 'ingestion_metadata'
 
     columns = [("Task", "VARCHAR"),
                ("Fecha", "TIMESTAMP WITH TIME ZONE"),
