@@ -25,6 +25,10 @@ def get_s3_credentials(credentials_file):
     s3_creds = credentials['s3']
     return s3_creds
 
+def get_db_conn(creds_file):
+    credentials = read_yaml_file(creds_file)
+    db_creds = credentials['db']
+    return db_creds
 
 def load_pickle_file(path):
     data_pkl = pickle.load(open(path, "rb"))
