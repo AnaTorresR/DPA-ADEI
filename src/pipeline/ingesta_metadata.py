@@ -4,7 +4,7 @@ import psycopg2
 
 from src.pipeline.ingesta_task import IngestaTask
 from luigi.contrib.postgres import CopyToTable
-from src.utils.general import get_db_conn
+from src.utils.general import get_db_credentials
 
 #from src.utils import constants
 

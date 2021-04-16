@@ -10,7 +10,7 @@ CREATE TABLE clean.features(
 inspection_id varchar,
 dba_name varchar,
 aka_name varchar,
-license_ integer,
+license_ varchar,
 facility_type varchar,
 risk varchar,
 address varchar,

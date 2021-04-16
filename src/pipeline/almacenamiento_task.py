@@ -49,13 +49,3 @@ class AlmacenamientoTask(luigi.Task):
             print("************************** pickle head {}".format(df_load.head(2)))
         with self.output().open('w') as output_file:
             pickle.dump(df_load, output_file)
-
-
-# src.pipeline.almacenamieto
-ingesta -> Metadata
-|
-almacenamieto -> Metadata
-|
-Cleaning -> Metadata
-|
-feature -> metadata

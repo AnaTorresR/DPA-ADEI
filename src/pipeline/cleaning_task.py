@@ -2,7 +2,7 @@ import pandas as pd
 import luigi
 # from src.pipeline.almacenamiento_metadata_task import AlmacenamientoMetadataTask
 from luigi.contrib.postgres import CopyToTable
-from src.utils.general import load_s3_object
+from src.utils.general import load_s3_object, get_db_credentials
 from src.utils import constants
 from src.utils.utils_notebook import cleaning
 
@@ -30,7 +30,7 @@ class CleaningTask(CopyToTable):
     columns = [("inspection_id", "VARCHAR"),
                 ("dba_name", "VARCHAR"),
                 ("aka_name", "VARCHAR"),
-                ("license" "INTEGER""),
+                ("license" "VARCHAR""),
                 ("facility_type" "VARCHAR"),
                 ("risk" "VARCHAR"),
                 ("address" "VARCHAR"),
