@@ -19,7 +19,7 @@ class IngestionMetadata(CopyToTable):
     def requires(self):
         return IngestaTask(self.ingesta, self.year, self.month, self.day)
 
-    credentials = get_db_conn('conf/local/credentials.yaml')
+    credentials = get_db_credentials('conf/local/credentials.yaml')
 
     user=credentials['user']
     password=credentials['pass']
@@ -35,6 +35,6 @@ class IngestionMetadata(CopyToTable):
 
     def rows(self):
         date = str(self.year + '-' + self.month + '-' + self.day)
-        r = [("Ingesta {}".format(self.ingesta), date , 'Equipo 2')]
+        r = [("Ingesta {}".format(self.ingesta), date , 'Equipo 6')]
         for element in r:
             yield element
