@@ -80,24 +80,34 @@ def first_insp(df):
 	df['first_inspection'] = df['last_inspection'].isnull().astype(int)
 	return df
 
+def create_label(df):
+	df['label'] = df['results'].apply(lambda x: '1' if (x == 'pass' or x == 'pass w/ conditions') else '0')
+	return df
+
 def one_hot(data):
 	ohe = OneHotEncoder(handle_unknown='ignore', categories= 'auto')
-	categorical_cols = ['facility_type', 'inspection_type', 'state', 'city']
+	categorical_cols = ['facility_type', 'inspection_type', 'risk']
 
 	array_hot_encoded = ohe.fit_transform(data[categorical_cols]).toarray()
 	column_name = ohe.get_feature_names(categorical_cols)
 	data_hot_encoded = pd.DataFrame(array_hot_encoded, index=data.index, columns= column_name)
-
 	data_other_cols = data.drop(columns=categorical_cols)
-
 	data_out = pd.concat([data_hot_encoded, data_other_cols], axis=1)
-
 	return data_out
 
+def feature_selection(df):
+	df = df.drop(['license_', 'address','city', 'state', 'results', 'latitude', 'longitude', 'inspection_id', 'dba_name', 'aka_name'], axis = 1)
+	return df
+
+   
 def feature_engineering(df):
 	df['facility_type'] = df.facility_type.apply (lambda row: re_categorize(row))
+	df = df.drop('location', axis = 1)
 	df = days_last_insp(df)
 	df = first_insp(df)
 	df = one_hot(df)
+	df = create_label(df)
+	df['violations'] = df.violations.str.extract('(\d+)')
+	df = feature_selection(df)
 
 	return df

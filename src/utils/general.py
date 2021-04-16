@@ -1,6 +1,7 @@
 import yaml
 import pickle
-import psicopg2
+#import psicopg2
+import boto3
 
 def read_yaml_file(yaml_file):
     """ load yaml cofigurations """
