@@ -53,6 +53,8 @@ class CleaningTask(CopyToTable):
             key = '{}-{}-{}-{}.pkl'.format(constants.concecutive_path, self.year, self.month, self.day)
         else:
             print('No such type of ingestion')
+            
+        creds_file = 'conf/local/credentials.yaml'
 
         df = load_s3_object(creds_file, key)
 
