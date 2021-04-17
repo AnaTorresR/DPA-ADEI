@@ -1,12 +1,14 @@
 import luigi
 import luigi.contrib.s3
 from src.pipeline.ingesta_task import IngestaTask
+from src.pipeline.ingesta_metadata import IngestionMetadata
 from src.utils.general import get_s3_credentials
 from src.utils import constants
 import pickle
 
 
 # PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta historica --year 2021 --month 02 --day 18
+# PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta consecutiva --year 2021 --month 04 --day 15
 
 class AlmacenamientoTask(luigi.Task):
     ingesta = luigi.Parameter()
@@ -15,7 +17,9 @@ class AlmacenamientoTask(luigi.Task):
     day = luigi.Parameter()
 
     def requires(self):
-        return {'ingesta_task': IngestaTask(self.ingesta, self.year, self.month, self.day)}
+        return {'ingesta_task': IngestaTask(self.ingesta, self.year, self.month, self.day),
+        'ingesta_metadata_task' : IngestionMetadata(self.ingesta, self.year, self.month, self.day)
+         }
 
     def output(self):
 
@@ -37,7 +41,6 @@ class AlmacenamientoTask(luigi.Task):
 
     def run(self):
 
-        # self.input()['ingesta_task'].open('rb') as fh:
         with self.input()['ingesta_task'].open('rb') as fh:
             print("************************** tipo de input open {}".format(type(fh)))
             df_load = pickle.load(fh)
@@ -47,4 +50,3 @@ class AlmacenamientoTask(luigi.Task):
             pickle.dump(df_load, output_file)
 
 
-# src.pipeline.almacenamieto

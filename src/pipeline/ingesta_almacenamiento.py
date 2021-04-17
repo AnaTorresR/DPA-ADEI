@@ -4,7 +4,7 @@ from datetime import date
 from datetime import timedelta
 import boto3
 import pickle
-from src.utils.general import get_s3_credentials
+from src.utils.general import *
 from src.utils import constants
 
 
@@ -27,12 +27,13 @@ def ingesta_inicial(client):
 
     # extraemos el dataset identifier de nuestro script src/utils/constants
     dataset_id = constants.dataset_id
-    print(dataset_id)
+    ###print(dataset_id)
     results = client.get_all(dataset_id)
     results_df = pd.DataFrame.from_records(results)
 
     # Serializar objeto obtenido de resultados
     # obj_to_upload = pickle.dumps(results_df)
+    ### obj_to_upload = pickle.dumps(results_df)
 
     # configuración  para la carga en s3 bucket
     # bucket_name = "data-product-architecture-equipo-6"
@@ -42,6 +43,11 @@ def ingesta_inicial(client):
 
     # se llama a función guardar ingesta
     # guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+    ### bucket_name = constants.bucket_name
+    ### bucket_path = "ingestion/initial/historic-inspections-{}.pkl".format(str(date.today()))
+
+    # se llama a función guardar ingesta
+    ### guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
 
     return results_df
 
@@ -62,6 +68,7 @@ def ingesta_consecutiva(client, limit):
 
     # Serializar objeto obtenido de resultados
     # obj_to_upload = pickle.dumps(results_df)
+    ###obj_to_upload = pickle.dumps(results_df)
 
     # configuración  para la carga en s3 bucket
     # bucket_name = "data-product-architecture-equipo-6"
@@ -71,15 +78,19 @@ def ingesta_consecutiva(client, limit):
 
     # se llama a función gradar ingesta
     # guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
+    ###bucket_name = constants.bucket_name
+    ###bucket_path = "ingestion/consecutive/consecutive-inspections-{}.pkl".format(str(today))
+
+    # se llama a función gradar ingesta
+    ###guardar_ingesta(bucket_name, bucket_path, obj_to_upload)
 
     return results_df
 
-
-def get_s3_resource():
-    s3_creds = get_s3_credentials("../conf/local/credentials.yaml")
+def get_s3_resource(aws_creds):
+    s3_creds = get_s3_credentials(aws_creds)
     session = boto3.Session(
-        aws_access_key_id=s3_creds['aws_access_key_id'],
-        aws_secret_access_key=s3_creds['aws_secret_access_key']
+        aws_access_key_id=s3_creds["aws_access_key_id"],
+        aws_secret_access_key=s3_creds["aws_secret_access_key"]
     )
 
     return session.client('s3')
@@ -92,6 +103,8 @@ def guardar_ingesta(bucket_name, bucket_path, obj_to_upload):
     # s3_resource.meta.client.upload_file(file_to_upload, bucket_name, bucket_path)
 
     # esto es para guardar objetos
+    bucket_name = constants.bucket_name
+
     s3_resource.put_object(Bucket=bucket_name, Key=bucket_path, Body=obj_to_upload)
 
     return
