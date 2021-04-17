@@ -41,8 +41,7 @@ class AlmacenamientoTask(luigi.Task):
 
     def run(self):
 
-        # self.input()['ingesta_task'].open('rb') as fh:
-        with self.input()['ingesta_metadata_task'].open('rb') as fh:
+        with self.input()['ingesta_task'].open('rb') as fh:
             print("************************** tipo de input open {}".format(type(fh)))
             df_load = pickle.load(fh)
             print("************************** pickle load {}".format(type(df_load)))

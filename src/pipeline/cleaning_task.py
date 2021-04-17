@@ -1,12 +1,12 @@
 import pandas as pd
 import luigi
-# from src.pipeline.almacenamiento_metadata_task import AlmacenamientoMetadataTask
+from src.pipeline.almacenamiento_metadata_task import AlmacenamientoMetadataTask
 from luigi.contrib.postgres import CopyToTable
 from src.utils.general import load_s3_object, get_db_credentials
 from src.utils import constants
 from src.utils.utils_notebook import cleaning
 
-# PYTHONPATH='.' luigi --module src.pipeline.cleaning_task CleaningTask --ingesta consecutiva --year 2021 --month 04 --day 15
+# PYTHONPATH='.' luigi --module src.pipeline.cleaning_task CleaningTask --ingesta consecutiva --year 2021 --month 03 --day 15 --local-scheduler
 
 class CleaningTask(CopyToTable):
     ingesta = luigi.Parameter()
@@ -14,8 +14,8 @@ class CleaningTask(CopyToTable):
     month = luigi.Parameter()
     day = luigi.Parameter()
 
-    #def requires(self):
-    #    return {'AlmacenamientoMetadataTask': AlmacenamientoMetadataTask(self.ingesta, self.year, self.month, self.day)}
+    def requires(self):
+        return {'AlmacenamientoMetadataTask': AlmacenamientoMetadataTask(self.ingesta, self.year, self.month, self.day)}
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 
@@ -25,12 +25,12 @@ class CleaningTask(CopyToTable):
     port=credentials['port']
     database=credentials['db']
 
-    table = 'ingestion_metadata'
+    table = 'clean.features'
 
     columns = [("inspection_id", "VARCHAR"),
                 ("dba_name", "VARCHAR"),
                 ("aka_name", "VARCHAR"),
-                ("license_", "VARCHAR"),
+                ("license", "VARCHAR"),
                 ("facility_type", "VARCHAR"),
                 ("risk", "VARCHAR"),
                 ("address", "VARCHAR"),

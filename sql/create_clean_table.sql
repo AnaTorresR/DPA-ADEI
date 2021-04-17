@@ -10,7 +10,7 @@ CREATE TABLE clean.features(
 inspection_id varchar,
 dba_name varchar,
 aka_name varchar,
-license_ varchar,
+license varchar,
 facility_type varchar,
 risk varchar,
 address varchar,
@@ -21,7 +21,6 @@ inspection_date timestamp without time zone,
 inspection_type varchar,
 results varchar,
 violations varchar,
-latitude numeric(12, 4),
-longitude numeric(12,4),
-location varchar
+latitude varchar,
+longitude varchar
 );

@@ -70,8 +70,8 @@ def re_categorize(text):
     return cat
 
 def days_last_insp(df):
-	df['last_inspection'] = df.sort_values(['license_', 'inspection_date']).\
-	groupby('license_')['inspection_date'].diff()
+	df['last_inspection'] = df.sort_values(['license', 'inspection_date']).\
+	groupby('license')['inspection_date'].diff()
 	df.last_inspection.mask(df.last_inspection.isna(), "0", inplace=True)
 
 	return df
@@ -86,7 +86,7 @@ def create_label(df):
 
 def one_hot(data):
 	ohe = OneHotEncoder(handle_unknown='ignore', categories= 'auto')
-	categorical_cols = ['facility_type', 'inspection_type', 'risk']
+	categorical_cols = ['risk']
 
 	array_hot_encoded = ohe.fit_transform(data[categorical_cols]).toarray()
 	column_name = ohe.get_feature_names(categorical_cols)
@@ -96,13 +96,12 @@ def one_hot(data):
 	return data_out
 
 def feature_selection(df):
-	df = df.drop(['license_', 'address','city', 'state', 'results', 'latitude', 'longitude', 'inspection_id', 'dba_name', 'aka_name'], axis = 1)
+	df = df.drop(['license', 'address','city', 'state', 'results', 'latitude', 'longitude', 'inspection_id', 'dba_name', 'aka_name'], axis = 1)
 	return df
 
-   
+
 def feature_engineering(df):
 	df['facility_type'] = df.facility_type.apply (lambda row: re_categorize(row))
-	df = df.drop('location', axis = 1)
 	df = days_last_insp(df)
 	df = first_insp(df)
 	df = one_hot(df)
