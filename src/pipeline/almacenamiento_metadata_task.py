@@ -2,7 +2,7 @@ import luigi
 import luigi.contrib.s3
 from luigi.contrib.postgres import CopyToTable
 from src.pipeline.almacenamiento_task import AlmacenamientoTask
-from src.utils.general import get_s3_credentials, get_db_credentials
+from src.utils.general import get_db_credentials
 from src.utils import constants
 import pickle
 

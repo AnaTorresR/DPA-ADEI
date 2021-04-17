@@ -71,3 +71,13 @@ def save_pickle_file(df, path):
         pickle.dump(df, f)
         f.close()
     return
+
+def select_clean_features(creds):
+    con = get_db_conn(creds)
+    q = """
+    select *
+    from
+        clean.features
+    """
+    df = pd.read_sql(q, con)
+    return df    

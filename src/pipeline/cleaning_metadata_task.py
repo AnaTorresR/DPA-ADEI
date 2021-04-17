@@ -2,8 +2,7 @@ import luigi
 import luigi.contrib.s3
 from luigi.contrib.postgres import CopyToTable
 from src.pipeline.cleaning_task import CleaningTask
-from src.utils.general import get_s3_credentials, get_db_credentials
-from src.utils import constants
+from src.utils.general import get_db_credentials
 import pickle
 
 # PYTHONPATH='.' luigi --module src.pipeline.cleaning_metadata_task CleaningMetadataTask --ingesta consecutiva --year 2021 --month 04 --day 15 --local-scheduler

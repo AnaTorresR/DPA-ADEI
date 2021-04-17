@@ -2,8 +2,7 @@ import pandas as pd
 import luigi
 from src.pipeline.cleaning_metadata_task import CleaningMetadataTask
 from luigi.contrib.postgres import CopyToTable
-from src.utils.general import load_s3_object, get_db_credentials, get_db_conn
-from src.utils import constants
+from src.utils.general import get_db_credentials, get_db_conn, select_clean_features
 from src.utils.utils_notebook.feature_engineering import feature_engineering
 
 # PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_task FETask --ingesta consecutiva --year 2021 --month 03 --day 15 --local-scheduler
@@ -40,15 +39,6 @@ class FETask(CopyToTable):
     ("label", "smallint")]
 
     def rows(self):
-        def select_clean_features(creds):
-            con = get_db_conn(creds)
-            q = """
-            select *
-            from
-                clean.features
-            """
-            df = pd.read_sql(q, con)
-            return df
 
         credentials = 'conf/local/credentials.yaml'
 

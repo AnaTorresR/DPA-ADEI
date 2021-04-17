@@ -17,7 +17,7 @@ class AlmacenamientoTask(luigi.Task):
     day = luigi.Parameter()
 
     def requires(self):
-        return {#'ingesta_task': IngestaTask(self.ingesta, self.year, self.month, self.day)
+        return {'ingesta_task': IngestaTask(self.ingesta, self.year, self.month, self.day),
         'ingesta_metadata_task' : IngestionMetadata(self.ingesta, self.year, self.month, self.day)
          }
 
