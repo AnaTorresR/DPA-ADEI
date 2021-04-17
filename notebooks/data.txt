@@ -1,1 +1,0 @@
-{"Ingestion": [{"name": "Consecutive"}], "Date": [{"Day": 15, "Month": 4, "Year": 2021}], "Author": [{"Team": "Equipo 2", "Person": "Ana"}]}
