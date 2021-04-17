@@ -30,20 +30,20 @@ class CleaningTask(CopyToTable):
     columns = [("inspection_id", "VARCHAR"),
                 ("dba_name", "VARCHAR"),
                 ("aka_name", "VARCHAR"),
-                ("license" "VARCHAR""),
-                ("facility_type" "VARCHAR"),
-                ("risk" "VARCHAR"),
-                ("address" "VARCHAR"),
-                ("city" "VARCHAR"),
-                ("state" "VARCHAR"),
-                ("state" "INTEGER"),
-                ("inspection_date" "TIMESTAMP WITHOUT TIME ZONE"),
-                ("inspection_type" "VARCHAR"),
-                ("results" "VARCHAR"),
-                ("violations" "VARCHAR"),
-                ("latitude" "NUMERIC(12, 4)"),
-                ("longitude" "NUMERIC(12,4)"),
-                ("location" "VARCHAR")]
+                ("license_", "VARCHAR"),
+                ("facility_type", "VARCHAR"),
+                ("risk", "VARCHAR"),
+                ("address", "VARCHAR"),
+                ("city", "VARCHAR"),
+                ("state", "VARCHAR"),
+                ("state", "INTEGER"),
+                ("inspection_date", "TIMESTAMP WITHOUT TIME ZONE"),
+                ("inspection_type", "VARCHAR"),
+                ("results", "VARCHAR"),
+                ("violations", "VARCHAR"),
+                ("latitude", "NUMERIC(12, 4)"),
+                ("longitude", "NUMERIC(12,4)"),
+                ("location", "VARCHAR")]
 
     def rows(self):
 
@@ -57,6 +57,7 @@ class CleaningTask(CopyToTable):
         df = load_s3_object(creds_file, key)
 
         df = cleaning(df)
+        r = df.to_records(index = False)
+
         for element in r:
-            r = df.to_records(index = False)
             yield element
