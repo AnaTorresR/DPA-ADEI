@@ -184,5 +184,18 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  * **DAG**
  
   ![DAG](img/DAG-checkpoint-3.png)
+  
+ * **RDS:**
+ (aquí pon cositas de la base de datos)
+  
+ * **Preprocessing:**
+ 
+ A partir de ahora, para todos las task que realicemos en el pipeline del proyecto se generará la metadata relevante asoaciada a cada una de las tasks. Esto incluye a las tasks de ingesta y almacenamiento que habíamos realizado antes.
+ 
+ En `src/pipeline` se crearon seis modulos relacionados con el preprocesamiento de los datos y la creación de metadata:
+
+ + _cleaning_task.py_ : Contiene el task _CleaningTask_ que lee los datos resultantes del proceso de ingesta del bucket de s3, les hace una serie de transformaciones de limpieza y finalmente, sube los datos limpios a la base de datos a la tabla de `features` dentro del esquema `clean`.
+ + _feature_engineering_task.py_ : Incluye la task _FETask_ la cual lee los datos limpios de `clean.features` y realiza las transformaciones necesarias para la ingeniería de características para después subir los datos transformados a la tabla `features` del esquema `semantic`.
+ + _ingesta_metadata_task.py_, _almacenamiento_metadata_task.py_, _cleaning_metadata_task.py_, _feature_engineering_metadata_task.py_ : Estos módulos incluyen las tasks de _IngestaMetadataTask_, _AlmacenamientoMetadataTask_, _CleaningMetadataTask_, _FEMetadataTask_ respectivamente. Estas task se encargan de escribir la metadata relevante de cada una de sus correspondientes tareas en la tabla de `metadata` en la base de datos. Esta metadata relevante incluye: tipo de task, tipo de ingesta, fecha de ejecución y autor.
     
- **OJO:** Asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv.
+ **OJO:** Antes de correr cualquier comando asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv del proyecto.
