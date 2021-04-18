@@ -182,16 +182,17 @@ Si únicamente deseas comprobar que tu ingesta histórica/consecutiva se encuent
 __------------->__ Por la forma en la que está construida la task de ingesta consecutiva, para evitar la duplicación u omisión de observaciones. Se debe ejecutar cada 7 días a la misma hora, o si es la primera consecutiva, 7 días después de la histórica.      
   
  * **RDS:**
- Para continuar con los siguientes pasos del proyecto es necesario crear una RDS, en nuestro caso la crearemos con aws y PostgreSQL. 
+ 
+ Para continuar con los siguientes pasos del proyecto es necesario crear una RDS, en nuestro caso la creamos con aws y PostgreSQL. 
  
  Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
 
-    db
-    user: "nombre-de-tu-usuario"
-    pass: "contraseña-de-tu-usuario"
-    host: "url-de-tu-base-de-datos"
-    port: "5432"
-    db: "nombre-de-tu-base-de-datos"
+    db:
+     user: "nombre-de-tu-usuario"
+     pass: "contraseña-de-tu-usuario"
+     host: "url-de-tu-base-de-datos"
+     port: "5432"
+     db: "nombre-de-tu-base-de-datos"
   
  * **Preprocessing:**
  
