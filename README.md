@@ -180,13 +180,18 @@ Si es la primera vez que ejecutas la ingesta histórica/consecutiva deberás ind
 Si únicamente deseas comprobar que tu ingesta histórica/consecutiva se encuentra en tu bucket s3 deberás indicar la fecha con la que se encuentra guardada esta ingesta.
      
 __------------->__ Por la forma en la que está construida la task de ingesta consecutiva, para evitar la duplicación u omisión de observaciones. Se debe ejecutar cada 7 días a la misma hora, o si es la primera consecutiva, 7 días después de la histórica.      
- 
- * **DAG**
- 
-  ![DAG](img/DAG-checkpoint-3.png)
   
  * **RDS:**
- (aquí pon cositas de la base de datos)
+ Para continuar con los siguientes pasos del proyecto es necesario crear una RDS, en nuestro caso la crearemos con aws y PostgreSQL. 
+ 
+ Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
+
+    db
+    user: "nombre-de-tu-usuario"
+    pass: "contraseña-de-tu-usuario"
+    host: "url-de-tu-base-de-datos"
+    port: "5432"
+    db: "nombre-de-tu-base-de-datos"
   
  * **Preprocessing:**
  
@@ -197,5 +202,10 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  + _cleaning_task.py_ : Contiene el task _CleaningTask_ que lee los datos resultantes del proceso de ingesta del bucket de s3, les hace una serie de transformaciones de limpieza y finalmente, sube los datos limpios a la base de datos a la tabla de `features` dentro del esquema `clean`.
  + _feature_engineering_task.py_ : Incluye la task _FETask_ la cual lee los datos limpios de `clean.features` y realiza las transformaciones necesarias para la ingeniería de características para después subir los datos transformados a la tabla `features` del esquema `semantic`.
  + _ingesta_metadata_task.py_, _almacenamiento_metadata_task.py_, _cleaning_metadata_task.py_, _feature_engineering_metadata_task.py_ : Estos módulos incluyen las tasks de _IngestaMetadataTask_, _AlmacenamientoMetadataTask_, _CleaningMetadataTask_, _FEMetadataTask_ respectivamente. Estas task se encargan de escribir la metadata relevante de cada una de sus correspondientes tareas en la tabla de `metadata` en la base de datos. Esta metadata relevante incluye: tipo de task, tipo de ingesta, fecha de ejecución y autor.
+
+ * **DAG**
+ 
+  ![DAG](img/DAG-checkpoint-3.png)
+  **cambiar a dag del checkpoint 4**
     
  **OJO:** Antes de correr cualquier comando asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv del proyecto.
