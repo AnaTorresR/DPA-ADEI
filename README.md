@@ -211,7 +211,13 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   psql -f create_semantic_table.sql service=food
   ```
   
-  O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos.
+  O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
+  
+     psql -h url-de-tu-rds -U postgres -d food
+     
+  Para ver el contenido de cualquier tabla puedes ejecutar lo siguiente desde postgres:
+  
+        select * from <esquema>.<tabla>
   
  * **Preprocessing:**
  
