@@ -183,7 +183,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   
  * **RDS:**
  
- Para continuar con los siguientes pasos del proyecto es necesario crear una RDS, en nuestro caso la creamos con aws y PostgreSQL. 
+ Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. 
  
  Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
 
@@ -194,6 +194,25 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
      port: "5432"
      db: "nombre-de-tu-base-de-datos"
   
+  Además, deberás de crear el archivo `.pg_service.conf` en el `/home` con las siguientes líneas:
+          
+     [food]
+     user=postgres
+     password=aquí-tu-contraseña
+     host=localhost
+     dbname=aquí-el-nombre-de-tu-base
+     port=9999
+  
+  En el directorio ![sql/](https://github.com/AnaTorresR/DPA-food_inspections/tree/main/sql) se encuentran los scripts `create_clean_table.sql`, `create_metadata_table.sql`, `create_semantic_table.sql` para crear sus correspondientes tablas en PostgreSQL. Para correr estos scripts deberás posicionarte en la raíz del repositorio y ejecutar el siguiente comando en tu terminal:
+  
+  ```
+  psql -f sql/create_clean_table.sql service=food
+  psql -f sql/create_metadata_table.sql service=food
+  psql -f create_semantic_table.sql service=food
+  ```
+  
+  O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos.
+  
  * **Preprocessing:**
  
  A partir de ahora, para todos las task que realicemos en el pipeline del proyecto se generará la metadata relevante asoaciada a cada una de las tasks. Esto incluye a las tasks de ingesta y almacenamiento que habíamos realizado antes.
@@ -203,6 +222,36 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  + _cleaning_task.py_ : Contiene el task _CleaningTask_ que lee los datos resultantes del proceso de ingesta del bucket de s3, les hace una serie de transformaciones de limpieza y finalmente, sube los datos limpios a la base de datos a la tabla de `features` dentro del esquema `clean`.
  + _feature_engineering_task.py_ : Incluye la task _FETask_ la cual lee los datos limpios de `clean.features` y realiza las transformaciones necesarias para la ingeniería de características para después subir los datos transformados a la tabla `features` del esquema `semantic`.
  + _ingesta_metadata_task.py_, _almacenamiento_metadata_task.py_, _cleaning_metadata_task.py_, _feature_engineering_metadata_task.py_ : Estos módulos incluyen las tasks de _IngestaMetadataTask_, _AlmacenamientoMetadataTask_, _CleaningMetadataTask_, _FEMetadataTask_ respectivamente. Estas task se encargan de escribir la metadata relevante de cada una de sus correspondientes tareas en la tabla de `metadata` en la base de datos. Esta metadata relevante incluye: tipo de task, tipo de ingesta, fecha de ejecución y autor.
+
+ Para correr los tasks anteriores con LUIGI, en una terminal activa tu pyenv y ejecuta el comando `luigid`, posteriormente en tu navegador escribe lo siguiente `localhost:8082`, así podrás ver la DAG de tus tasks. O, si lo estás corriendo desde tu bastión, realiza un port fordwarding de la siguiente manera:
+ 
+      ssh -i ~/.ssh/id_rsa -NL localhost:8082:localhost:8082 tu-usuario@url-de-tu-bastion
+ 
+ En otra terminal, para poder ejecutar estos tasks deberás ubicarte en la raíz de este proyecto y ejecutar el siguiente comando con tu pyenv activado:
+ 
+ __Limpieza:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.cleaning_task CleaningTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+ 
+ __Feature Engineering:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.cleaning_task CleaningTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+      
+ __Metadata Ingesta:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.ingesta_metadata_task IngestaMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+      
+ __Metadata Almacenamiento:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_metadata_task AlmacenamientoMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+      
+ __Metadata Limpieza:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.cleaning_metadata_task CleaningMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+      
+ __Metadata Feature Engineering:__
+ 
+      PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_metadata_task FEMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
  * **DAG**
  
