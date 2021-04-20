@@ -1,4 +1,6 @@
 import pandas as pd
+from datetime import date
+from datetime import timedelta
 import luigi
 from src.pipeline.cleaning_metadata_task import CleaningMetadataTask
 from luigi.contrib.postgres import CopyToTable

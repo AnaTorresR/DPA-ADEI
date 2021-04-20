@@ -1,6 +1,7 @@
 import yaml
 import pickle
-#import psicopg2
+import pandas as pd
+import psycopg2
 import boto3
 
 def read_yaml_file(yaml_file):
@@ -80,7 +81,7 @@ def select_clean_features(creds, date):
     from
         clean.features
     where
-        inspection_date >= {}
+        inspection_date >= '{}'
     """.format(date)
     
     df = pd.read_sql(q, con)
