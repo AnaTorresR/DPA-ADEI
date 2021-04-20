@@ -243,7 +243,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  
  __Feature Engineering:__
  
-      PYTHONPATH='.' luigi --module src.pipeline.cleaning_task CleaningTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+      PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_task FETask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
       
  __Metadata Ingesta:__
  
