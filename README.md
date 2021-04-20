@@ -263,5 +263,4 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
 
  * **DAG**
  
-  ![DAG](img/DAG-checkpoint-3.png)
-  **cambiar a dag del checkpoint 4**
+  ![DAG](img/DAG-checkpoint-4.png)
