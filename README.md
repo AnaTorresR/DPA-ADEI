@@ -101,6 +101,8 @@
    * Las librerías y sus dependencias que se utilizarán para este proyecto se encuentran en el archivo requirements.txt 
    * EL EDA/GDA de los datos se encuentra en la ruta `notebooks/eda.ipynb`, para poder reproducir este notebook se requiere cargar el script `src/utils/utils_notebook/utils_eda.py` y para reproducir la gráfica del mapa de Chicago se deberán de cargar los archivos que se encuentran en la ruta `notebooks/Boundaries - City`
    * En la [wiki](https://github.com/AnaTorresR/DPA-food_inspections/wiki/Bit%C3%A1cora) encontrarás una bitácora de las acciones realizadas en cada checkpoint, así como su fecha de entrega.
+
+ **OJO:** Antes de correr cualquier comando asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv del proyecto.
  
 * **Proceso de ingesta:** 
 
@@ -199,9 +201,9 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
      [food]
      user=postgres
      password=aquí-tu-contraseña
-     host=localhost
+     host=endpoint-de-tu-rds
      dbname=aquí-el-nombre-de-tu-base
-     port=9999
+     port=5432
   
   En el directorio ![sql/](https://github.com/AnaTorresR/DPA-food_inspections/tree/main/sql) se encuentran los scripts `create_clean_table.sql`, `create_metadata_table.sql`, `create_semantic_table.sql` para crear sus correspondientes tablas en PostgreSQL. Para correr estos scripts deberás posicionarte en la raíz del repositorio y ejecutar el siguiente comando en tu terminal:
   
@@ -263,5 +265,3 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  
   ![DAG](img/DAG-checkpoint-3.png)
   **cambiar a dag del checkpoint 4**
-    
- **OJO:** Antes de correr cualquier comando asegúrate de haber instalado la versión actual del requirements.txt de la siguiente manera: `pip install -r requirements.txt` dentro de tu pyenv del proyecto.
