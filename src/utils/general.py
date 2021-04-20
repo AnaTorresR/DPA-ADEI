@@ -73,12 +73,15 @@ def save_pickle_file(df, path):
         f.close()
     return
 
-def select_clean_features(creds):
+def select_clean_features(creds, date):
     con = get_db_conn(creds)
     q = """
     select *
     from
         clean.features
-    """
+    where 
+	inspection_date >= '{}'
+    """.format(date)
+
     df = pd.read_sql(q, con)
     return df

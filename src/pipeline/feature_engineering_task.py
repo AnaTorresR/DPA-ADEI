@@ -1,5 +1,7 @@
 import pandas as pd
 import luigi
+from datetime import date
+from datetime import timedelta
 from src.pipeline.cleaning_metadata_task import CleaningMetadataTask
 from luigi.contrib.postgres import CopyToTable
 from src.utils.general import get_db_credentials, get_db_conn, select_clean_features
@@ -40,10 +42,12 @@ class FETask(CopyToTable):
 
     def rows(self):
 
-        credentials = 'conf/local/credentials.yaml'
+       	credentials = 'conf/local/credentials.yaml'
 
+        today = date.today()
+        delta_date = today - timedelta(days=7)
 
-        df = select_clean_features(credentials)
+        df = select_clean_features(credentials, delta_date)
 
         df = feature_engineering(df)
 
