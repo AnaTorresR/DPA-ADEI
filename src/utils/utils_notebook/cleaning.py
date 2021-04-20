@@ -61,7 +61,6 @@ def fix_typos(typo):
     """
     Evaluates if a typo was made while writing the word "chicago" or if the word
     is entirely different by comparing the set of characters of each word.
-
     Args:
         typo (string): string to evaluate
     Returns:
@@ -84,8 +83,7 @@ def imputations(df):
 	df.state.mask(df.city.isna(), "il", inplace=True)
 	df.aka_name.mask(df.aka_name.isna(), df.dba_name, inplace=True)
 	df.violations.mask(df.violations.isna(), '0', inplace=True)
-    df.violations.mask(df.violations.isnan(), '0', inplace=True)
-    df.zip.mask(df.zip.isna(), '0', inplace=True)
+	df.zip.mask(df.zip.isna(), '0', inplace=True)
 	return df
 
 def cleaning(pkl):
@@ -94,5 +92,5 @@ def cleaning(pkl):
 	df = lowercase(df)
 	df = imputations(df)
 	df['city'] = df.city.apply (lambda row: fix_typos(row))
-    df = df.drop('location', axis = 1)
+	df = df.drop('location', axis = 1)
 	return df
