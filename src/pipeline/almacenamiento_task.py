@@ -1,7 +1,7 @@
 import luigi
 import luigi.contrib.s3
 from src.pipeline.ingesta_task import IngestaTask
-from src.pipeline.ingesta_metadata import IngestionMetadata
+from src.pipeline.ingesta_metadata_task import IngestaMetadataTask
 from src.utils.general import get_s3_credentials, load_pickle_file
 from src.utils import constants
 import pickle
@@ -18,7 +18,7 @@ class AlmacenamientoTask(luigi.Task):
 
     def requires(self):
         return {
-        'ingesta_metadata_task' : IngestionMetadata(self.ingesta, self.year, self.month, self.day)
+        'ingesta_metadata_task' : IngestionMetadataTask(self.ingesta, self.year, self.month, self.day)
          }
 
     def output(self):
