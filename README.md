@@ -215,7 +215,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   
   O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
   
-     psql -h url-de-tu-rds -U postgres -d food
+     psql -h url-de-tu-rds -U postgres -d nombre-de-tu-base-de-datos
      
   Para ver el contenido de cualquier tabla puedes ejecutar lo siguiente desde postgres:
   
