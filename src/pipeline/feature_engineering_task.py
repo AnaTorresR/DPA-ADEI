@@ -28,10 +28,8 @@ class FETask(CopyToTable):
 
     table = 'semantic.features'
 
-    columns = [("risk_high", "smallint"),
-    ("risk_medium", "smallint"),
-    ("risk_low", "smallint"),
-    ("facility_type", "varchar"),
+    columns = [("facility_type", "varchar"),
+    ("risk", "varchar"),
     ("zip", "integer"),
     ("inspection_date", "timestamp without time zone"),
     ("inspection_type", "varchar"),

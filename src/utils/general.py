@@ -85,3 +85,17 @@ def select_clean_features(creds, date):
 
     df = pd.read_sql(q, con)
     return df
+
+def select_semantic_features(creds,date):
+    con = get_db_conn(creds)
+    q = """
+    select *
+    from
+        semantic.features
+    where
+        inspection_date >= {}
+    """.format(date)
+
+    df = pd.read_sql(q, con)
+    return df
+
