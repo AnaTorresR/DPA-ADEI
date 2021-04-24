@@ -14,24 +14,17 @@ def one_hot(data):
 
 def split(data):
     """70% train 30% test"""
-    train_size = round(datos.shape[0]*0.70)
-    test_size = round(datos.shape[0]*0.30)
+    train_size = round(data.shape[0]*0.70)
+    test_size = round(data.shape[0]*0.30)
 
     train = pd.DataFrame(data.head(train_size)).reset_index(drop=True)
     test = pd.DataFrame(data.tail(test_size)).reset_index(drop=True)
-
-    #X_train = train.loc[:, train.columns != 'label']
-
-    #y_train = train.label
-
-    #X_test = test.loc[:, test.columns != 'label']
-
-    #y_test = test.label
 
     return train, test
 
 def train_test(data):
     df = one_hot(data)
-    df = split(df)
-    return df
+    df = df.drop('inspection_date', axis = 1)
+    df_train, df_test = split(df)
+    return df_train, df_test
 

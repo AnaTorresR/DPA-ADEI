@@ -5,7 +5,7 @@ from datetime import timedelta
 from src.pipeline.feature_engineering_metadata_task import FEMetadataTask
 from src.utils.general import get_s3_credentials, load_pickle_file, select_semantic_features
 from src.utils import constants
-from src.utils.utils_notebook import train_test
+from src.utils.utils_notebook.train_test import train_test
 import pickle
 
 # PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_task EntrenamientoTask --ingesta consecutiva --year 2021 --month 04 --day 07 --local-scheduler
