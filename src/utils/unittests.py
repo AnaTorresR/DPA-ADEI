@@ -33,7 +33,6 @@ class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileM
         A = set(self.df['risk'])
         A = {x for x in A if pd.notna(x)}
         B = set(self.RISKS)
-        A.issubset(B)
         self.assertTrue(A.issubset(B), msg= self.msg_risks)
 
     def test_inspection_date_future(self):
@@ -62,8 +61,11 @@ class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
     #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
     #df = load_pickle_file(path)
 
-    def __init__(self, df):
+    def __init__(self, df, year, month, day):
         self.df = df
+        self.year = year
+        self.month = month
+        self.day = day
 
     RISKS = ['Risk 1 (High)', 'Risk 2 (Medium)', 'Risk 3 (Low)', 'All']
 
@@ -71,28 +73,37 @@ class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
     msg_date = "El almacenamiento contiene datos del futuro o del pasado. Revisar la ingesta."
     msg_col = "El número de columnas no coincide con los datos anteriores."
     msg_row = "El almacenamiento está vacío, no contiene ninguna observación. Revisar ingesta."
-
+    msg_params = "No se pueden ingestar datos del futuro."
+    
     def test_categories_risks(self):
         A = set(self.df['risk'])
+        A = {x for x in A if pd.notna(x)}
         B = set(self.RISKS)
-        A.issubset(B)
         self.assertTrue(A.issubset(B), msg= self.msg_risks)
 
     def test_inspection_date_future(self):
         today = date.today()
         dates = pd.to_datetime(self.df['inspection_date'])
-        self.assertDateTimesBefore(dates, today, msg = self.msg_date)
+        self.assertDateTimesBefore(dates, today, msg = self.msg_date,
+        note="Fechas de inspección mayores a las de hoy.")
 
     def test_inspection_date_past(self):
         first_insp = datetime.strptime( '04-01-2021', "%d-%m-%Y")
         dates = pd.to_datetime(self.df['inspection_date'])
-        self.assertDateTimesAfter(dates, first_insp, msg = self.msg_date)
+        self.assertDateTimesAfter(dates, first_insp, msg = self.msg_date,
+        note = "Fechas de inspección previas al inicio de las inspecciones.")
 
     def test_num_columns(self):
         self.assertTrue(len(self.df.columns) == 17, msg = self.msg_col)
 
     def test_not_empty(self):
         self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)
+
+    def test_params(self):
+        today = datetime.now()
+        param = datetime.strptime("{}-{}-{}".format(self.day, self.month, self.year),
+        "%d-%m-%Y")
+        self.assertTrue(param <= today, msg = self.msg_params)
 
 class TestCleaning(marbles.core.TestCase):
     #cambiar el path cuando hagas luigi
