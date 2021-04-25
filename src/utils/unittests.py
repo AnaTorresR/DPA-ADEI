@@ -8,10 +8,15 @@ from src.utils.general import load_pickle_file
 
 class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileMixins, marbles.mixins.DateTimeMixins):
     #cambiar el path cuando hagas luigi
-    path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    df = load_pickle_file(path)
+    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
+    #df = load_pickle_file(path)
 
-    RISKS = ['Risk 1 (High)', 'Risk 2 (Medium)', 'Risk 3 (Low)', 'All']
+    def __init__(self, df, year, month, day):
+        self.df = df
+        self.year = year
+        self.month = month
+        self.day = day
+        self.RISKS = ['Risk 1 (High)', 'Risk 2 (Medium)', 'Risk 3 (Low)', 'All']
 
     msg_file = "El archivo pkl de ingesta no existe."
     msg_risks = "Los niveles de Risks de la nueva ingesta no coinciden con los datos anteriores."
@@ -19,11 +24,12 @@ class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileM
     msg_col = "El número de columnas no coincide con los datos anteriores."
     msg_row = "La ingesta está vacía, no contiene ninguna observación."
 
-    def test_file_exits(self):
-        self.assertFileExists(self.path, msg = self.msg_file)
+    #def test_file_exits(self):
+    #    self.assertFileExists(self.path, msg = self.msg_file)
 
     def test_categories_risks(self):
         A = set(self.df['risk'])
+        A = {x for x in A if pd.notna(x)}
         B = set(self.RISKS)
         A.issubset(B)
         self.assertTrue(A.issubset(B), msg= self.msg_risks)
@@ -44,9 +50,18 @@ class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileM
     def test_not_empty(self):
         self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)
 
+    def test_params(self):
+        today = datetime.now()
+        param = datetime.strptime("{}-{}-{}".format(self.day, self.month, self.year),
+        "%d-%m-%Y")
+        self.assertTrue(param <= today)
+
 class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
-    path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    df = load_pickle_file(path)
+    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
+    #df = load_pickle_file(path)
+
+    def __init__(self, df):
+        self.df = df
 
     RISKS = ['Risk 1 (High)', 'Risk 2 (Medium)', 'Risk 3 (Low)', 'All']
 
@@ -79,8 +94,11 @@ class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
 
 class TestCleaning(marbles.core.TestCase):
     #cambiar el path cuando hagas luigi
-    path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    df = load_pickle_file(path)
+    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
+    #df = load_pickle_file(path)
+
+    def __init__(self, df):
+        self.df = df
 
     msg_low = """Existen datos en el data frame con texto que utiliza mayúsuclas.
     Es necasario que todo esté en minúsculas"""

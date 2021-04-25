@@ -3,8 +3,8 @@ import luigi.contrib.s3
 import pickle
 from src.utils import constants
 from src.pipeline.ingesta_task import IngestaTask
-from src.utils.general import get_s3_credentials, get_db_credentials
-from src.utils import unittests2
+from src.utils.general import get_s3_credentials, get_db_credentials, load_pickle_file
+from src.utils import unittests
 from luigi.contrib.postgres import CopyToTable
 
 # PYTHONPATH='.' luigi --module src.pipeline.ingesta_test_task TestIngestaTask --ingesta consecutiva --year 2021 --month 04 --day 15
@@ -47,7 +47,14 @@ class TestIngestaTask(CopyToTable):
 
         df = load_pickle_file(temp_path)
 
-        TestIngesta(df)
+        #unittests.TestIngesta.test_file_exits(df)
+        tests = unittests.TestIngesta(df, self.year, self.month, self.day)
+        tests.test_categories_risks()
+        tests.test_inspection_date_future()
+        tests.test_inspection_date_past()
+        tests.test_num_columns()
+        tests.test_not_empty()
+        tests.test_params()
 
         date = str(self.year + '-' + self.month + '-' + self.day)
         r = [("unit test ingesta","Ingesta {}".format(self.ingesta), date , 'Equipo 6')]

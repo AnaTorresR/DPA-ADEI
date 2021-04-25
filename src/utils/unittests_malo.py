@@ -8,11 +8,8 @@ from src.utils.general import load_pickle_file
 
 class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileMixins, marbles.mixins.DateTimeMixins):
     #cambiar el path cuando hagas luigi
-    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    #df = load_pickle_file(path)
-
-    def __init__(self, df):
-        self.df = df
+    path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
+    df = load_pickle_file(path)
 
     RISKS = ['Risk 1 (High)', 'Risk 2 (Medium)', 'Risk 3 (Low)', 'All']
 
