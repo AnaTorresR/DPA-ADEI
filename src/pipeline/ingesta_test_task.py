@@ -45,10 +45,10 @@ class TestIngestaTask(CopyToTable):
         else:
             print('No such type of ingestion')
 
-        df = load_pickle_file(temp_path)
+        #df = load_pickle_file(temp_path)
 
-        #unittests.TestIngesta.test_file_exits(df)
-        tests = unittests.TestIngesta(df, self.year, self.month, self.day)
+        tests = unittests.TestIngesta(temp_path, self.year, self.month, self.day)
+
         tests.test_categories_risks()
         tests.test_inspection_date_future()
         tests.test_inspection_date_past()
