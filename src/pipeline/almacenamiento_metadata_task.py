@@ -29,7 +29,7 @@ class AlmacenamientoMetadataTask(CopyToTable):
 
     columns = [("Task", "VARCHAR"),
                ("INGESTION", "VARCHAR"),
-               ("FECHA", "TIMESTAMP WITHOUT TIME ZONE"),
+               ("FECHA", "TIMESTAMP WITH TIME ZONE"),
                ("AUTOR", "VARCHAR")]
 
     def rows(self):

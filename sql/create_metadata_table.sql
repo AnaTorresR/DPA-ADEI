@@ -7,6 +7,6 @@ DROP TABLE IF EXISTS metadata;
 CREATE TABLE metadata(
   Task varchar,
   Ingestion varchar,
-  Fecha timestamp without time zone,
+  Fecha timestamp with time zone,
   Autor varchar
 );
