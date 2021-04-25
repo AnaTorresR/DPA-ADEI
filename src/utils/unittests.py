@@ -11,21 +11,23 @@ class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileM
     #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
     #df = load_pickle_file(path)
 
-    def __init__(self, df, year, month, day):
-        self.df = df
+    def __init__(self, path, year, month, day):
+        self.path = path
         self.year = year
         self.month = month
         self.day = day
         self.RISKS = ['Risk 1 (High)', 'Risk 2 (Medium)', 'Risk 3 (Low)', 'All']
+        self.df = load_pickle_file(path)
 
     msg_file = "El archivo pkl de ingesta no existe."
     msg_risks = "Los niveles de Risks de la nueva ingesta no coinciden con los datos anteriores."
     msg_date = "La ingesta contiene datos del futuro o del pasado."
     msg_col = "El número de columnas no coincide con los datos anteriores."
     msg_row = "La ingesta está vacía, no contiene ninguna observación."
+    msg_params = "No se pueden ingestar datos del futuro."
 
-    #def test_file_exits(self):
-    #    self.assertFileExists(self.path, msg = self.msg_file)
+    def test_file_exits(self):
+        self.assertFileExists(self.path, msg = self.msg_file)
 
     def test_categories_risks(self):
         A = set(self.df['risk'])
@@ -54,7 +56,7 @@ class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileM
         today = datetime.now()
         param = datetime.strptime("{}-{}-{}".format(self.day, self.month, self.year),
         "%d-%m-%Y")
-        self.assertTrue(param <= today)
+        self.assertTrue(param <= today, msg = self.msg_params)
 
 class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
     #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
