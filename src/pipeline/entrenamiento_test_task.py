@@ -6,19 +6,19 @@ from datetime import date, datetime
 from datetime import timedelta
 from luigi.contrib.postgres import CopyToTable
 from src.utils.general import get_db_conn, select_semantic_features, get_db_credentials
-from src.pipeline.feature_engineering_task import FETask
-#from src.utils import unittests
+from src.pipeline.entrenamiento_task import EntrenamientoTask
 
-# PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_test_task FETestTask --ingesta consecutiva --year 2021 --month 04 --day 23
+# PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_test_task EntrenamientoTestTask --ingesta consecutiva --year 2021 --month 04 --day 23
 
 ### TEST
-class TestFE(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
+class TestEntrenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins, marbles.mixins.CategoricalMixins):
 
     def __init__(self, luigi_year, luigi_month, luigi_day):
         #super(TestFE, self)._init_()
         self.year = luigi_year
         self.month = luigi_month
         self.day = luigi_day
+        self.label = [0,1]
 
 # Validación de fecha
     def test_inspection_date_future(self):
@@ -27,46 +27,28 @@ class TestFE(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
         "%d-%m-%Y")
         self.assertTrue(param <= today,
             msg = "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: Esta fecha no ha ocurrido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-# Registros
-    def test_rows_count(self):
-        credentials = 'conf/local/credentials.yaml'
+# Label
+    def test_labels(self):
 
+        credentials = 'conf/local/credentials.yaml'
         today = date.today()
         delta_date = today - timedelta(days=7)
-
         df = select_semantic_features(credentials, delta_date)
-
-        n_rows = df.shape[0]
-
-        self.assertGreater(n_rows, 1, note = "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: No se tienen registros!!!!!!!!!!!!!!!!!!")
-
-        print('Número de registros cargados: {}'.format(n_rows))
-
-# Variables
-    def test_cols_count(self):
-        credentials = 'conf/local/credentials.yaml'
-
-        today = date.today()
-        delta_date = today - timedelta(days=7)
-
-        df = select_semantic_features(credentials, delta_date)
-
-        n_cols = df.shape[1]
-
-        self.assertGreater(n_cols, 1, note = "¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: No se tienen registros!!!!!!!!!!!!!!!")
-
-        print('Número de columnas cargadas: {}'.format(n_cols))
+        A = set(df['label'])
+        B = set(self.label)
+        A.issubset(B)
+        self.assertTrue(A.issubset(B), msg = "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: Diferentes etiquetas!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 ######## LUIGI
 
-class FETestTask(CopyToTable):
+class EntrenamientoTestTask(CopyToTable):
     ingesta = luigi.Parameter()
     year = luigi.Parameter()
     month = luigi.Parameter()
     day = luigi.Parameter()
 
     def requires(self):
-        return FETask(self.ingesta, self.year, self.month, self.day)
+        return EntrenamientoTask(self.ingesta, self.year, self.month, self.day)
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 
@@ -84,12 +66,12 @@ class FETestTask(CopyToTable):
     ]
 
     def rows(self):
-        testing = TestFE(self.year, self.month, self.day)
+
+        testing = TestEntrenamiento(self.year, self.month, self.day)
         testing.test_inspection_date_future()
-        testing.test_rows_count()
-        testing.test_cols_count()
+        testing.test_labels()
 
         date = str(self.year + '-' + self.month + '-' + self.day)
-        r = [("feature engineering", pd.to_datetime(date) , 'Equipo 6')]
+        r = [("Entrenamiento", date , 'Equipo 6')]
         for element in r:
             yield element
