@@ -1,7 +1,7 @@
 import luigi
 import luigi.contrib.s3
 from luigi.contrib.postgres import CopyToTable
-from src.pipeline.feature_engineering_task import FETask
+from src.pipeline.feature_engineering_test_task import FETestTask
 from src.utils.general import get_db_credentials
 from src.utils import constants
 import pickle
@@ -15,7 +15,7 @@ class FEMetadataTask(CopyToTable):
     day = luigi.Parameter()
 
     def requires(self):
-        return FETask(self.ingesta, self.year, self.month, self.day)
+        return FETestTask(self.ingesta, self.year, self.month, self.day)
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 

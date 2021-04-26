@@ -1,7 +1,7 @@
 import luigi
 import luigi.contrib.s3
 from luigi.contrib.postgres import CopyToTable
-from src.pipeline.entrenamiento_task import EntrenamientoTask
+from src.pipeline.entrenamiento_test_task import EntrenamientoTestTask
 from src.utils.general import get_db_credentials
 from src.utils import constants
 import pickle
@@ -15,7 +15,7 @@ class EntrenamientoMetadataTask(CopyToTable):
     day = luigi.Parameter()
 
     def requires(self):
-        return EntrenamientoTask(self.ingesta, self.year, self.month, self.day)
+        return EntrenamientoTestTask(self.ingesta, self.year, self.month, self.day)
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 

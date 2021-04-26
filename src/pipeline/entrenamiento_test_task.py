@@ -87,6 +87,7 @@ class EntrenamientoTestTask(CopyToTable):
         df = load_s3_object(creds_file, key)
 
         testing = TestEntrenamiento(df, self.year, self.month, self.day)
+        testing.test_inspection_date_future()
         testing.test_rows_count()
         testing.test_cols_count()
 
