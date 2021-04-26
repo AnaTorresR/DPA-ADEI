@@ -1,19 +1,16 @@
 import marbles.core
 import marbles.mixins
 import luigi
+import sys
 import pandas as pd
 from datetime import date, datetime
 from datetime import timedelta
 from luigi.contrib.postgres import CopyToTable
 from src.utils.general import load_s3_object, get_db_credentials
-from src.pipeline.entrenamiento_task import EntrenamientoTask
 from src.utils import constants
+from src.pipeline.seleccion_modelo_task import SeleccionModeloTask
 
-
-# PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_test_task EntrenamientoTestTask --ingesta consecutiva --year 2021 --month 04 --day 23
-
-### TEST
-class TestEntrenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins, marbles.mixins.CategoricalMixins):
+class TestSeleccionModelo(marbles.core.TestCase, marbles.mixins.DateTimeMixins, marbles.mixins.CategoricalMixins):
 
     def __init__(self, luigi_df, luigi_year, luigi_month, luigi_day):
         #super(TestFE, self)._init_()
@@ -21,7 +18,6 @@ class TestEntrenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins, ma
         self.month = luigi_month
         self.day = luigi_day
         self.df = luigi_df
-        self.label = ['0','1']
 
 # Validación de fecha
     def test_inspection_date_future(self):
@@ -31,33 +27,20 @@ class TestEntrenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins, ma
         self.assertTrue(param <= today,
             msg = "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: Esta fecha no ha ocurrido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 # Registros
-    def test_rows_count(self):
-
-        n_rows = self.df.shape[0]
-
-        self.assertGreater(n_rows, 1, note = "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: No se tienen registros!!!!!!!!!!!!!!!!!!")
-
-        print('Número de registros cargados: {}'.format(n_rows))
-
-# Variables
-    def test_cols_count(self):
-
-        n_cols = self.df.shape[1]
-
-        self.assertGreater(n_cols, 1, note = "¡¡¡¡¡¡¡¡¡¡¡¡¡ERROR: No se tienen registros!!!!!!!!!!!!!!!")
-
-        print('Número de columnas cargadas: {}'.format(n_cols))
+    def test_file_size(self):
+        size = sys.getsizeof(self.df)
+        self.assertTrue(size>0, msg = "¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ ERROR: NO SE GUARDÓ NADA!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 ######## LUIGI
 
-class EntrenamientoTestTask(CopyToTable):
+class SeleccionModeloTestTask(CopyToTable):
     ingesta = luigi.Parameter()
     year = luigi.Parameter()
     month = luigi.Parameter()
     day = luigi.Parameter()
 
     def requires(self):
-        return EntrenamientoTask(self.ingesta, self.year, self.month, self.day)
+        return SeleccionModeloTask(self.ingesta, self.year, self.month, self.day)
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 
@@ -76,9 +59,9 @@ class EntrenamientoTestTask(CopyToTable):
 
     def rows(self):
         if self.ingesta == 'historica':
-            key = '{}-{}-{}-{}-train.pkl'.format(constants.initial_path, self.year, self.month, self.day)
+            key = '{}-{}-{}-{}-modelo.pkl'.format(constants.initial_path, self.year, self.month, self.day)
         elif self.ingesta == 'consecutiva':
-            key = '{}-{}-{}-{}-train.pkl'.format(constants.concecutive_path, self.year, self.month, self.day)
+            key = '{}-{}-{}-{}-modelo.pkl'.format(constants.concecutive_path, self.year, self.month, self.day)
         else:
             print('No such type of ingestion')
 
@@ -86,11 +69,11 @@ class EntrenamientoTestTask(CopyToTable):
 
         df = load_s3_object(creds_file, key)
 
-        testing = TestEntrenamiento(df, self.year, self.month, self.day)
-        testing.test_rows_count()
-        testing.test_cols_count()
+        testing = TestSeleccionModelo(df, self.year, self.month, self.day)
+        testing.test_inspection_date_future()
+        testing.test_file_size()
 
         date = str(self.year + '-' + self.month + '-' + self.day)
-        r = [("Entrenamiento", date , 'Equipo 6')]
+        r = [("Selección modelo", date , 'Equipo 6')]
         for element in r:
             yield element
