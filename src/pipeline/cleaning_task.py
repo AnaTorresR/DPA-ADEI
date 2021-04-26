@@ -15,7 +15,7 @@ class CleaningTask(CopyToTable):
     day = luigi.Parameter()
 
     def requires(self):
-        return {'AlmacenamientoMetadataTask': AlmacenamientoMetadataTask(self.ingesta, self.year, self.month, self.day)}
+        return AlmacenamientoMetadataTask(self.ingesta, self.year, self.month, self.day)
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 
