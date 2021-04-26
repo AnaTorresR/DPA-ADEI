@@ -103,7 +103,7 @@ def feature_engineering(df):
 	df['facility_type'] = df.facility_type.apply (lambda row: re_categorize(row))
 	df = days_last_insp(df)
 	df = first_insp(df)
-	df = one_hot(df)
+#	df = one_hot(df)
 	df = create_label(df)
 	df['violations'] = df.violations.str.extract('(\d+)')
 	df = feature_selection(df)

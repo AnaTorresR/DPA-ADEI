@@ -1,13 +1,13 @@
 import pandas as pd
+import luigi
 from datetime import date
 from datetime import timedelta
-import luigi
 from src.pipeline.cleaning_metadata_task import CleaningMetadataTask
 from luigi.contrib.postgres import CopyToTable
 from src.utils.general import get_db_credentials, get_db_conn, select_clean_features
 from src.utils.utils_notebook.feature_engineering import feature_engineering
 
-# PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_task FETask --ingesta consecutiva --year 2021 --month 04 --day 30 
+# PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_task FETask --ingesta consecutiva --year 2021 --month 03 --day 15 --local-scheduler
 
 class FETask(CopyToTable):
     ingesta = luigi.Parameter()
@@ -28,10 +28,8 @@ class FETask(CopyToTable):
 
     table = 'semantic.features'
 
-    columns = [("risk_high", "smallint"),
-    ("risk_medium", "smallint"),
-    ("risk_low", "smallint"),
-    ("facility_type", "varchar"),
+    columns = [("facility_type", "varchar"),
+    ("risk", "varchar"),
     ("zip", "integer"),
     ("inspection_date", "timestamp without time zone"),
     ("inspection_type", "varchar"),
@@ -42,7 +40,7 @@ class FETask(CopyToTable):
 
     def rows(self):
 
-        credentials = 'conf/local/credentials.yaml'
+       	credentials = 'conf/local/credentials.yaml'
 
         today = date.today()
         delta_date = today - timedelta(days=7)
@@ -55,3 +53,4 @@ class FETask(CopyToTable):
 
         for element in r:
             yield element
+

@@ -3,6 +3,11 @@ import pickle
 import pandas as pd
 import psycopg2
 import boto3
+import numpy as np
+from sklearn.model_selection import GridSearchCV
+#from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+#from sklearn.tree import DecisionTreeClassifier
 
 def read_yaml_file(yaml_file):
     """ load yaml cofigurations """
@@ -86,3 +91,41 @@ def select_clean_features(creds, date):
     
     df = pd.read_sql(q, con)
     return df
+
+def select_semantic_features(creds,date):
+    con = get_db_conn(creds)
+    q = """
+    select *
+    from
+        semantic.features
+    where
+        inspection_date >= '{}'
+    """.format(date)
+
+    df = pd.read_sql(q, con)
+    return df
+
+def modeling(df):
+
+    X = df.loc[:, df.columns != 'label']
+
+    y = df.label
+
+    np.random.seed(19960311)
+
+    classifier = RandomForestClassifier(oob_score=True, random_state=1234)
+
+    hyper_param_grid = {'n_estimators': [100, 200],
+                    'max_depth': [5, 10, 15],
+                    'min_samples_split': [10, 20]}
+
+    gs = GridSearchCV(classifier,
+                 hyper_param_grid,
+                 scoring = 'precision',
+                 cv = 5,
+                 n_jobs = -1)
+
+    modelos = gs.fit(X, y)
+    modelo_bueno = modelos.best_estimator_
+
+    return modelo_bueno

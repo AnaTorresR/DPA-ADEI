@@ -1,7 +1,7 @@
 import luigi
 import luigi.contrib.s3
 from luigi.contrib.postgres import CopyToTable
-from src.pipeline.cleaning_task import CleaningTask
+from src.pipeline.cleaning_test_task import TestCleaningTask
 from src.utils.general import get_db_credentials
 import pickle
 
@@ -15,7 +15,7 @@ class CleaningMetadataTask(CopyToTable):
     day = luigi.Parameter()
 
     def requires(self):
-        return CleaningTask(self.ingesta, self.year, self.month, self.day)
+        return TestCleaningTask(self.ingesta, self.year, self.month, self.day)
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
 
