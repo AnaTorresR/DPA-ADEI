@@ -284,4 +284,5 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
 
  * **DAG**
  
-  ![DAG](img/DAG-checkpoint-4.jpeg)
+  ![DAG](img/checkpoint_5a.png)
+  ![DAG](img/checkpoint_5b.png)
