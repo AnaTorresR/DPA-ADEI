@@ -186,7 +186,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   
  * **RDS:**
  
- Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. 
+ Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. Ten en cuenta que para esto deberás de tener instalado psql en tu computadora.
  
  Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
 
@@ -217,6 +217,10 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
   
      psql -h url-de-tu-rds -U postgres -d nombre-de-tu-base-de-datos
+  
+  o bien, usando tu pgservice:
+      
+      psql service=food
      
   Para ver el contenido de cualquier tabla puedes ejecutar lo siguiente desde postgres:
   
@@ -234,7 +238,9 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
 
  Para correr los tasks anteriores con LUIGI, en una terminal activa tu pyenv y ejecuta el comando `luigid`, posteriormente en tu navegador escribe lo siguiente `localhost:8082`, así podrás ver la DAG de tus tasks. O, si lo estás corriendo desde tu bastión, realiza un port fordwarding de la siguiente manera:
  
-      ssh -i ~/.ssh/id_rsa -NL localhost:8082:localhost:8082 tu-usuario@url-de-tu-bastion
+      ssh -i ~/.ssh/id_rsa -NL localhost:<puerto-libre-en-tu-computadora>:localhost:8082 tu-usuario@url-de-tu-bastion
+      
+ Y abre la interfaz de luigi escribiendo `localhost:<puerto-libre-en-tu-computadora>` en tu navegador.
  
  En otra terminal, para poder ejecutar estos tasks deberás ubicarte en la raíz de este proyecto y ejecutar el siguiente comando con tu pyenv activado:
  
