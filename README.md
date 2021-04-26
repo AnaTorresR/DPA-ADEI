@@ -156,7 +156,8 @@ Esta función se estará ejecutando semanalmente, tomará la fecha del día de e
 (t-1) y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket. **Esto es debido a la forma de actualización de los datos que es a día vencido**
   
 Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
- 
+
+
 * **LUIGI:** 
 
  Se crearon dos módulos llamados _ingesta_task.py_, _almacenamiento_task.py_ ubicados en la paquetería `src/pipeline`. Estos módulos contienen las task llamadas _IngestaTask_ y _AlmacenamientoTask_ respectivamente. 
@@ -185,7 +186,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   
  * **RDS:**
  
- Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. 
+ Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. Ten en cuenta que para esto deberás de tener instalado psql en tu computadora.
  
  Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
 
@@ -216,6 +217,10 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
   
      psql -h url-de-tu-rds -U postgres -d nombre-de-tu-base-de-datos
+  
+  o bien, usando tu pgservice:
+      
+      psql service=food
      
   Para ver el contenido de cualquier tabla puedes ejecutar lo siguiente desde postgres:
   
@@ -233,7 +238,9 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
 
  Para correr los tasks anteriores con LUIGI, en una terminal activa tu pyenv y ejecuta el comando `luigid`, posteriormente en tu navegador escribe lo siguiente `localhost:8082`, así podrás ver la DAG de tus tasks. O, si lo estás corriendo desde tu bastión, realiza un port fordwarding de la siguiente manera:
  
-      ssh -i ~/.ssh/id_rsa -NL localhost:8082:localhost:8082 tu-usuario@url-de-tu-bastion
+      ssh -i ~/.ssh/id_rsa -NL localhost:<puerto-libre-en-tu-computadora>:localhost:8082 tu-usuario@url-de-tu-bastion
+      
+ Y abre la interfaz de luigi escribiendo `localhost:<puerto-libre-en-tu-computadora>` en tu navegador.
  
  En otra terminal, para poder ejecutar estos tasks deberás ubicarte en la raíz de este proyecto y ejecutar el siguiente comando con tu pyenv activado:
  
@@ -261,6 +268,29 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  
       PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_metadata_task FEMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
+__Entrenamiento:__
+   
+    PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_task EntrenamientoTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
+
+__Metadata Entrenamiento:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_metadata_task EntrenamientoMetadataTask --ingesta <tipo-de-ingesta>  --year aaaa --month mm --day dd 
+
+__Selección Modelo:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_task SeleccionModeloTask --ingesta <tipo-de-ingesta>  --year aaaa --month mm --day dd 
+
+__Metadata Selección Modelo:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_metadata_task SeleccionModeloMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
+
+* **Pruebas Unitarias**
+
+Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla sea no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura. 
+
  * **DAG**
  
-  ![DAG](img/DAG-checkpoint-4.jpeg)
+  ![DAG](img/checkpoint_5b.png)
+  
+  
+  ![DAG](img/checkpoint_5a.png)
