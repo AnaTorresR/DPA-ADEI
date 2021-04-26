@@ -156,7 +156,8 @@ Esta función se estará ejecutando semanalmente, tomará la fecha del día de e
 (t-1) y serán guardados como objeto pickle en la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` en tu bucket. **Esto es debido a la forma de actualización de los datos que es a día vencido**
   
 Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
- 
+
+
 * **LUIGI:** 
 
  Se crearon dos módulos llamados _ingesta_task.py_, _almacenamiento_task.py_ ubicados en la paquetería `src/pipeline`. Estos módulos contienen las task llamadas _IngestaTask_ y _AlmacenamientoTask_ respectivamente. 
@@ -260,6 +261,26 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  __Metadata Feature Engineering:__
  
       PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_metadata_task FEMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+
+__Entrenamiento:__
+   
+    PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_task EntrenamientoTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
+
+__Metadata Entrenamiento:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_metadata_task EntrenamientoMetadataTask --ingesta <tipo-de-ingesta>  --year aaaa --month mm --day dd 
+
+__Selección Modelo:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_task SeleccionModeloTask --ingesta <tipo-de-ingesta>  --year aaaa --month mm --day dd 
+
+__Metadata Selección Modelo:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_metadata_task SeleccionModeloMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
+
+* **Pruebas Unitarias**
+
+Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla sea no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura. 
 
  * **DAG**
  
