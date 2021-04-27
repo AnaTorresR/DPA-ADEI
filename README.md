@@ -206,7 +206,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
      dbname=aquí-el-nombre-de-tu-base
      port=5432
   
-  En el directorio ![sql/](https://github.com/AnaTorresR/DPA-food_inspections/tree/main/sql) se encuentran los scripts `create_clean_table.sql`, `create_metadata_table.sql`, `create_semantic_table.sql` para crear sus correspondientes tablas en PostgreSQL. Para correr estos scripts deberás posicionarte en la raíz del repositorio y ejecutar el siguiente comando en tu terminal:
+  En el directorio ![sql/](https://github.com/AnaTorresR/DPA-food_inspections/tree/main/sql) se encuentran los scripts `create_clean_table.sql`, `create_metadata_table.sql`, `create_semantic_table.sql` y `create_tests_table.sql` para crear sus correspondientes tablas en PostgreSQL. Para correr estos scripts deberás posicionarte en la raíz del repositorio y ejecutar el siguiente comando en tu terminal:
   
   ```
   psql -f sql/create_clean_table.sql service=food
