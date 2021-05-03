@@ -8,6 +8,11 @@ from sklearn.model_selection import GridSearchCV
 #from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 #from sklearn.tree import DecisionTreeClassifier
+from aequitas.group import Group
+from aequitas.bias import Bias
+from aequitas.fairness import Fairness
+from aequitas.plotting import Plot
+from aequitas.preprocessing import preprocess_input_df
 
 def read_yaml_file(yaml_file):
     """ load yaml cofigurations """
@@ -129,3 +134,50 @@ def modeling(df):
     modelo_bueno = modelos.best_estimator_
 
     return modelo_bueno
+
+def aequitas_preprocessing(creds, date, train_key, model_key):
+
+    datos = select_semantic_features(creds, date)
+    train = load_s3_object(creds, train_key)
+    modelo = load_s3_object(creds, model_key)
+
+    X_train = train.loc[:, train.columns != 'label']
+    y_train = train.label
+
+    modelo_predicciones = modelo.predict(X_train)
+    modelo_predicted_scores = modelo.predict_proba(X_train)
+
+    preds = pd.DataFrame(modelo_predicted_scores[:, 1], columns=['score'])
+    data = pd.concat([datos, preds], axis = 1)
+	# Precisión 97
+    data['score'] = data['score'].apply(lambda x: '0' if x < 0.665264 else '1')
+
+    data= data.drop(['zip', 'inspection_date', 'last_inspection', 'first_inspection'], axis = 1)
+    data = data.rename(columns = {'label': 'label_value'})
+    data['label_value'] = data['label_value'].astype('str')
+    data = data.dropna()
+    data = data.drop('violations', axis =1)
+
+    return data
+
+
+def aequitas(df):
+
+    df_top, _ = preprocess_input_df(df)
+
+    df_top['label_value']=df_top['label_value'].astype(float)
+    df_top['score']=df_top['score'].astype(int)
+
+    g = Group()
+    xtab, attrbs = g.get_crosstabs(df_top)
+
+    bias = Bias()
+
+    bdf = bias.get_disparity_predefined_groups(xtab, original_df=df_top,
+          ref_groups_dict={'facility_type':'restaurant', 'risk':'risk 1 (high)', 'inspection_type':'canvass'},
+          alpha=0.05)
+
+    sesgo = bdf[['attribute_name', 'attribute_value'] + bias.list_disparities(bdf)].round(2)
+    sesgo = sesgo[['attribute_name', 'attribute_value', 'for_disparity', 'fnr_disparity', 'tpr_disparity','fnr_disparity']]
+
+    return sesgo
