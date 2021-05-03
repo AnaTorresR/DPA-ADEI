@@ -93,7 +93,7 @@ def select_clean_features(creds, date):
     where
         inspection_date >= '{}'
     """.format(date)
-    
+
     df = pd.read_sql(q, con)
     return df
 
