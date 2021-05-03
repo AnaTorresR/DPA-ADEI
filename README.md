@@ -206,12 +206,13 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
      dbname=aquí-el-nombre-de-tu-base
      port=5432
   
-  En el directorio ![sql/](https://github.com/AnaTorresR/DPA-food_inspections/tree/main/sql) se encuentran los scripts `create_clean_table.sql`, `create_metadata_table.sql`, `create_semantic_table.sql` para crear sus correspondientes tablas en PostgreSQL. Para correr estos scripts deberás posicionarte en la raíz del repositorio y ejecutar el siguiente comando en tu terminal:
+  En el directorio ![sql/](https://github.com/AnaTorresR/DPA-food_inspections/tree/main/sql) se encuentran los scripts `create_clean_table.sql`, `create_metadata_table.sql`, `create_semantic_table.sql` y `create_tests_table.sql` para crear sus correspondientes tablas en PostgreSQL. Para correr estos scripts deberás posicionarte en la raíz del repositorio y ejecutar el siguiente comando en tu terminal:
   
   ```
   psql -f sql/create_clean_table.sql service=food
   psql -f sql/create_metadata_table.sql service=food
-  psql -f create_semantic_table.sql service=food
+  psql -f sql/create_semantic_table.sql service=food
+  psql -f sql/create_tests_table.sql service=food
   ```
   
   O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
@@ -286,7 +287,28 @@ __Metadata Selección Modelo:__
 
 * **Pruebas Unitarias**
 
-Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla sea no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura. 
+Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura. 
+
+* Test Ingesta y Test Almacenamiento:
+               - Verifica si existe el archivo guardado en la carpeta temporal `temp`.
+               - Verifica si existen los 4 tipos de riesgos en los datos ingestados.
+               - Verifica que la variable `inspection_date` tenga fechas coherentes.
+               - Verifica que el archivo guardado en la carpeta temporal no esté vacío.
+               - Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
+
+* Test Cleaning:
+               - Verifica que todos los registros estén en minúsculas.
+               - Verifica que el número de columnas sean exactamente 16.
+               - Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
+               
+* Test Feature Engineering y Entrenamiento:
+               - Verifica que los datos tengan más de una columna.
+               - Verifica que los datos tengam más de un registro.
+               - Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
+ 
+* Test Selección Modelo:
+               - Verifica que el tamaño del archivo guardado como el mejor modelo en el bucket S3 sea mayor a 0 bytes.
+               - Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
 
  * **DAG**
  
