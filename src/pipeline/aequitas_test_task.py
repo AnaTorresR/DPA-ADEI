@@ -59,6 +59,7 @@ class TestAequitasTask(CopyToTable):
         tests.test_num_columns()
         tests.test_not_empty()
         tests.test_params()
+        tests.test_assist()
 
         date_ = str(self.year + '-' + self.month + '-' + self.day)
         r = [("unit test aequitas", date_ , 'Equipo 6')]

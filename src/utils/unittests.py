@@ -145,16 +145,18 @@ class TestCleaning(marbles.core.TestCase):
 
 class TestAequitas(marbles.core.TestCase):
 
-    def __init__(self, df, year, month, day):
+    def __init__(self, df, year, month, day, model_type):
         self.df = df
         self.year = year
         self.month = month
         self.day = day
+        self.model_type = model_type
 
     msg_att = "El número de atributos a considerar no coincide con análisis previos."
     msg_col = "El número de métricas no coincide con los análisis anteriores."
     msg_row = "El almacenamiento está vacío, no contiene ninguna observación."
     msg_params = "No se puede analizar sesgo e inequidad de modelos futuros."
+    msg_assist = "Nuestro modelo está pensado para utilizarse de manera asistiva."
 
     def test_attributes(self):
         attributes = self.df.attribute_name
@@ -171,3 +173,7 @@ class TestAequitas(marbles.core.TestCase):
         param = datetime.strptime("{}-{}-{}".format(self.day, self.month, self.year),
         "%d-%m-%Y")
         self.assertTrue(param <= today, msg = self.msg_params)
+
+    def test_assist(self):
+        self.assertTrue(self.model_type == 'assistive', msg = self. msg_assist,
+        note = "Tu input: {}".format(self.model_type))
