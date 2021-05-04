@@ -287,7 +287,9 @@ __Metadata Selección Modelo:__
     
 __Aequitas:__
 
-    PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+    PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
+    
+O puedes omitir el parámetro `model-type` pues nuestro pipeline tiene el valor _assistive_ por default.
     
 __Metadata Aequitas:__
     
