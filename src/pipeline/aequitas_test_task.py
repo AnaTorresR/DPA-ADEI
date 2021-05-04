@@ -38,12 +38,13 @@ class TestAequitasTask(CopyToTable):
     def rows(self):
 
         if self.ingesta == 'historica':
-            key = 's3://{}/{}-{}-{}-{}-aequitas.pkl'. \
-                format(constants.bucket_name, constants.initial_path, self.year, self.month, self.day)
+            #key = 's3://{}/{}-{}-{}-{}-aequitas.pkl'. \
+            key = '{}-{}-{}-{}-aequitas.pkl'. \
+                format(constants.initial_path, self.year, self.month, self.day)
 
         elif self.ingesta == 'consecutiva':
-            key = 's3://{}/{}-{}-{}-{}-aequitas.pkl'. \
-                format(constants.bucket_name, constants.concecutive_path, self.year, self.month, self.day)
+            key = '{}-{}-{}-{}-aequitas.pkl'. \
+                format(constants.concecutive_path, self.year, self.month, self.day)
 
         else:
             print('No such type of ingestion')
