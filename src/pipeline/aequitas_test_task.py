@@ -53,7 +53,7 @@ class TestAequitasTask(CopyToTable):
 
         df = load_s3_object(credentials, key)
 
-        tests = unittests.TestAequitas(df, self.year, self.month, self.day)
+        tests = unittests.TestAequitas(df, self.year, self.month, self.day, self.model_type)
 
         tests.test_attributes()
         tests.test_num_columns()
