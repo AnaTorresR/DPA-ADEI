@@ -284,6 +284,11 @@ __Selección Modelo:__
 __Metadata Selección Modelo:__
 
     PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_metadata_task SeleccionModeloMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
+    
+__Aequitas:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+    
 
 * **Pruebas Unitarias**
 
@@ -310,6 +315,11 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
                - Verifica que el tamaño del archivo guardado como el mejor modelo en el bucket S3 sea mayor a 0 bytes.
                - Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
 
+* Test Aequitas:
+               - Verifica que el análisis de sesgo e inequidad se realice para 3 tipos de atributos (facility_type, risk e inspection_type)
+               - Verifica que la tabla resultante contenga 4 métricas para cada grupo ('for_disparity', 'fnr_disparity', 'tpr_disparity','fnr_disparity')
+               - Verifica que la tabla resultante no esté vacía.
+               - Varifica que sólo se realice el análisis para fechas ya ocurridas.
  * **DAG**
  
   ![DAG](img/checkpoint_5b.png)
