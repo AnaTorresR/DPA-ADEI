@@ -304,24 +304,24 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
 
 * Test Cleaning:
-      + Verifica que todos los registros estén en minúsculas.
-      + Verifica que el número de columnas sean exactamente 16.
-      + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
+     + Verifica que todos los registros estén en minúsculas.
+     + Verifica que el número de columnas sean exactamente 16.
+     + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
                
 * Test Feature Engineering y Entrenamiento:
-      + Verifica que los datos tengan más de una columna.
-      + Verifica que los datos tengam más de un registro.
-      + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
+     + Verifica que los datos tengan más de una columna.
+     + Verifica que los datos tengam más de un registro.
+     + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
  
 * Test Selección Modelo:
-      + Verifica que el tamaño del archivo guardado como el mejor modelo en el bucket S3 sea mayor a 0 bytes.
-      + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
+     + Verifica que el tamaño del archivo guardado como el mejor modelo en el bucket S3 sea mayor a 0 bytes.
+     + Verifica que se esté realizando ingesta de datos de fechas ya ocurridas.
 
 * Test Aequitas:
-      + Verifica que el análisis de sesgo e inequidad se realice para 3 tipos de atributos (facility_type, risk e inspection_type)
-      + Verifica que la tabla resultante contenga 4 métricas para cada grupo ('for_disparity', 'fnr_disparity', 'tpr_disparity','fnr_disparity')
-      + Verifica que la tabla resultante no esté vacía.
-      + Verifica que sólo se realice el análisis para fechas ya ocurridas.
+     + Verifica que el análisis de sesgo e inequidad se realice para 3 tipos de atributos (facility_type, risk e inspection_type)
+     + Verifica que la tabla resultante contenga 4 métricas para cada grupo ('for_disparity', 'fnr_disparity', 'tpr_disparity','fnr_disparity')
+     + Verifica que la tabla resultante no esté vacía.
+     + Verifica que sólo se realice el análisis para fechas ya ocurridas.
 
 
  * **DAG**
