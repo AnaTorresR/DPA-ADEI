@@ -322,6 +322,7 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que la tabla resultante contenga 4 métricas para cada grupo ('for_disparity', 'fnr_disparity', 'tpr_disparity','fnr_disparity')
      + Verifica que la tabla resultante no esté vacía.
      + Verifica que sólo se realice el análisis para fechas ya ocurridas.
+     + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
 
 
  * **DAG**
