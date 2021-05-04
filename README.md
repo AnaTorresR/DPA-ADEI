@@ -225,7 +225,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
      
   Para ver el contenido de cualquier tabla puedes ejecutar lo siguiente desde postgres:
   
-        select * from <esquema>.<tabla>
+        select * from <esquema>.<tabla>;
   
  * **Preprocessing:**
  
