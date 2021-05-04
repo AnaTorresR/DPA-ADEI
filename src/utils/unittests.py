@@ -7,9 +7,6 @@ from src.utils.general import load_pickle_file
 
 
 class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileMixins, marbles.mixins.DateTimeMixins):
-    #cambiar el path cuando hagas luigi
-    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    #df = load_pickle_file(path)
 
     def __init__(self, path, year, month, day):
         self.path = path
@@ -58,8 +55,6 @@ class TestIngesta(marbles.core.TestCase,  mixins.CategoricalMixins, mixins.FileM
         self.assertTrue(param <= today, msg = self.msg_params)
 
 class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
-    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    #df = load_pickle_file(path)
 
     def __init__(self, df, year, month, day):
         self.df = df
@@ -106,9 +101,6 @@ class TestAlmacenamiento(marbles.core.TestCase, marbles.mixins.DateTimeMixins):
         self.assertTrue(param <= today, msg = self.msg_params)
 
 class TestCleaning(marbles.core.TestCase):
-    #cambiar el path cuando hagas luigi
-    #path="/home/diramtz/Documents/DPA/DPA-food_inspections/temp/data-product-architecture-equipo-6/ingestion/consecutive/consecutive-inspections-2021-03-17.pkl"
-    #df = load_pickle_file(path)
 
     def __init__(self, df, year, month, day):
         self.df = df
@@ -122,7 +114,7 @@ class TestCleaning(marbles.core.TestCase):
     msg_col = "El número de columnas no coincide con los datos anteriores."
     msg_row = "El almacenamiento está vacío, no contiene ninguna observación"
     msg_params = "No se pueden ingestar datos del futuro."
-    
+
     def test_lower(self):
         risks = self.df.risk
         results = self.df.results
@@ -141,6 +133,35 @@ class TestCleaning(marbles.core.TestCase):
 
     def test_num_columns(self):
         self.assertTrue(len(self.df.columns) == 16, msg = self.msg_col)
+
+    def test_not_empty(self):
+        self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)
+
+    def test_params(self):
+        today = datetime.now()
+        param = datetime.strptime("{}-{}-{}".format(self.day, self.month, self.year),
+        "%d-%m-%Y")
+        self.assertTrue(param <= today, msg = self.msg_params)
+
+class TestAequitas(marbles.core.TestCase):
+
+    def __init__(self, df, year, month, day):
+        self.df = df
+        self.year = year
+        self.month = month
+        self.day = day
+
+    msg_att = "El número de atributos a considerar no coincide con análisis previos."
+    msg_col = "El número de métricas no coincide con los análisis anteriores."
+    msg_row = "El almacenamiento está vacío, no contiene ninguna observación."
+    msg_params = "No se puede analizar sesgo e inequidad de modelos futuros."
+
+    def test_attributes(self):
+        attributes = self.df.attribute_name
+        self.assertTrue(len(set(attributes)) == 3, msg = self.msg_att)
+
+    def test_num_columns(self):
+        self.assertTrue(len(self.df.columns) == 6, msg = self.msg_col)
 
     def test_not_empty(self):
         self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)

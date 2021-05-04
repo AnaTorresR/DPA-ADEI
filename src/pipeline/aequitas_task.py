@@ -7,7 +7,7 @@ from src.utils.general import *
 from src.utils import constants
 import pickle
 
-## PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta consecutiva --year 2021 --month 05 --day 03 --local-scheduler
+## PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta consecutiva --year 2021 --month 05 --day 03
 
 class AequitasTask(luigi.Task):
 
