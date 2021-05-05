@@ -186,7 +186,9 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   
  * **RDS:**
  
- Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. Ten en cuenta que para esto deberás de tener instalado psql en tu computadora.
+ Para continuar con los siguientes pasos del proyecto es necesario contar con una base de datos destinada para el proyecto en una RDS de PostgreSQL. Ten en cuenta que para esto deberás de tener instalado psql en tu computadora. Si no lo tienes instalado, puedes instalarlo copiando y pegando lo siguiente en tu terminal:
+ 
+                sudo apt install postgresql postgresql-contrib
  
  Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
 
