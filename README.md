@@ -157,6 +157,11 @@ Esta función se estará ejecutando semanalmente, tomará la fecha del día de e
   
 Para que estas funcionas sean ejecutables se necesita del script `src/utils/general.py` que contiene las funciones `read_yaml`, `get_s3_credentials()` y `get_api_token` que a su vez importa el archivo `conf/local/credentials.yaml` cuya estructura ha sido mencionada anteriormente. 
 
+* **Aequitas**
+
+Este proyecto será considerado **asistivo**, debido a que los dueños de los establecimientos podrán observar a través de nuestra API (lista para el 25 de mayo) si su establecimiento pasará o no la inspección, por lo que podrán tomar las medidas necesarias para que el establecimiento pase la inspección el día que se les asigne. 
+
+Las métricas consideradas en este proyecto serán **FNR, FOR, TPR, FNR**
 
 * **LUIGI:** 
 
@@ -293,8 +298,9 @@ __Aequitas:__
     
 O puedes omitir el parámetro `model-type` pues nuestro pipeline tiene el valor _assistive_ por default.
     
-__Metadata Aequitas:__
-    
+__Metadata Aequitas:__ 
+       
+    PYTHONPATH='.' luigi --module src.pipeline.aequitas_metadata_task AequitasMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
 * **Pruebas Unitarias**
 
@@ -327,7 +333,6 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que la tabla resultante no esté vacía.
      + Verifica que sólo se realice el análisis para fechas ya ocurridas.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
-
 
  * **DAG**
  
