@@ -161,6 +161,16 @@ Para que estas funcionas sean ejecutables se necesita del script `src/utils/gene
 
 Este proyecto será considerado **asistivo**, debido a que los dueños de los establecimientos podrán observar a través de nuestra API (lista para el 25 de mayo) si su establecimiento pasará o no la inspección, por lo que podrán tomar las medidas necesarias para que el establecimiento pase la inspección el día que se les asigne. 
 
+Los grupos de referencia son los siguientes:
+
+ |Variable|Grupo|
+ |:---:|:---:|
+ |Tipo de establecimiento|Restaurante|
+ |Riesgo| 1. Alto |
+ | Tipo de inspección|Canvass|
+
+La razón por la que seleccionaos estos grupos de referencia es porque son las categorías con la mayor frecuencia en nuestros datos. Lo puedes ver nuestro [EDA](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/notebooks/eda.ipynb)
+
 Las métricas consideradas en este proyecto serán **FNR, FOR, TPR, FNR**
 
 * **LUIGI:** 
