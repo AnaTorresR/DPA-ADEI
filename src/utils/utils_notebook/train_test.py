@@ -3,7 +3,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 def one_hot(data):
     ohe = OneHotEncoder(handle_unknown='ignore', categories= 'auto')
-    categorical_cols = ['risk','facility_type', 'inspection_type']
+    categorical_cols = ['risk','facility_type', 'inspection_type', 'violations']
 
     array_hot_encoded = ohe.fit_transform(data[categorical_cols]).toarray()
     column_name = ohe.get_feature_names(categorical_cols)
