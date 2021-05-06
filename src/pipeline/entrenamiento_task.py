@@ -17,7 +17,7 @@ class EntrenamientoTask(luigi.Task):
     day = luigi.Parameter()
 
     def requires(self):
-       return {
+        return {
         'FE_metadata_task' : FEMetadataTask(self.ingesta, self.year, self.month, self.day)
          }
 

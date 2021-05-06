@@ -100,7 +100,16 @@ def select_clean_features(creds, date):
 def select_semantic_features(creds,date):
     con = get_db_conn(creds)
     q = """
-    select *
+    select
+       facility_type,
+       risk,
+       zip,
+       inspection_date,
+       inspection_type,
+       case when (violations = 'nan') then '0' else violations end as violations,
+       last_inspection,
+       first_inspection,
+       label
     from
         semantic.features
     where

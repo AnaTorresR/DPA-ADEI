@@ -105,7 +105,7 @@ def feature_engineering(df):
 	df = first_insp(df)
 #	df = one_hot(df)
 	df = create_label(df)
-#	df['violations'] = df.violations.str.extract('(\d+)')
+	df['violations'] = df.violations.str.extract('(\d+)')
 	df = feature_selection(df)
 
 	return df
