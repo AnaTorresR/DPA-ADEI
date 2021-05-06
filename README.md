@@ -304,13 +304,13 @@ __Metadata Selección Modelo:__
     
 __Aequitas:__
 
-    PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
+    PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type 'assistive'
     
 O puedes omitir el parámetro `model-type` pues nuestro pipeline tiene el valor _assistive_ por default.
     
 __Metadata Aequitas:__ 
        
-    PYTHONPATH='.' luigi --module src.pipeline.aequitas_metadata_task AequitasMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
+    PYTHONPATH='.' luigi --module src.pipeline.aequitas_metadata_task AequitasMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type 'assistive'
 
 * **Pruebas Unitarias**
 
