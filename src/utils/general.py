@@ -164,7 +164,7 @@ def aequitas_preprocessing(creds, date, train_key, model_key):
     data= data.drop(['zip', 'inspection_date', 'last_inspection', 'first_inspection'], axis = 1)
     data = data.rename(columns = {'label': 'label_value'})
     data['label_value'] = data['label_value'].astype('str')
-    data = data.dropna()
+#    data = data.dropna()
     data = data.drop('violations', axis =1)
 
     return data
@@ -187,6 +187,6 @@ def aequitas(df):
           alpha=0.05)
 
     sesgo = bdf[['attribute_name', 'attribute_value'] + bias.list_disparities(bdf)].round(2)
-    sesgo = sesgo[['attribute_name', 'attribute_value', 'for_disparity', 'fnr_disparity', 'tpr_disparity','fnr_disparity']]
+    sesgo = sesgo[['attribute_name', 'attribute_value', 'for_disparity', 'fnr_disparity', 'tpr_disparity']]
 
     return sesgo
