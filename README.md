@@ -171,7 +171,12 @@ Los grupos de referencia son los siguientes:
 
 La razón por la que seleccionaos estos grupos de referencia es porque son las categorías con la mayor frecuencia en nuestros datos. Lo puedes ver nuestro [EDA](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/notebooks/eda.ipynb)
 
-Las métricas consideradas en este proyecto serán **FNR, FOR, TPR, FNR**
+Las métricas consideradas en este proyecto serán:
+
+|FNR| Nos interesa saber si los establecimientos que pasaron la inspección cuántas de esas veces nos equivocamos en la predicción debido al tipo de establecimiento.|
+|FOR| Nos interesa conocer si hay un sesgo hacia algún grupo de no ser seleccionado como etiqueta positiva.|
+|TPR | Tasa de verdaderos positivos |
+
 
 * **LUIGI:** 
 
