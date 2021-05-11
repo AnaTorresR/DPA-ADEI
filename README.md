@@ -173,11 +173,11 @@ La razón por la que seleccionaos estos grupos de referencia es porque son las c
 
 Las métricas consideradas en este proyecto serán:
 
-* **FNR**: Nos interesa saber si los establecimientos que pasaron la inspección cuántas de esas veces nos equivocamos en la predicción debido al tipo de establecimiento.
+    * **FNR**: Nos interesa saber si los establecimientos que pasaron la inspección cuántas de esas veces nos equivocamos en la predicción debido al tipo de establecimiento.
 
-* **FOR**: Nos interesa conocer si hay un sesgo hacia algún grupo de no ser seleccionado como etiqueta positiva.
+    * **FOR**: Nos interesa conocer si hay un sesgo hacia algún grupo de no ser seleccionado como etiqueta positiva.
 
-* **TPR**:  Tasa de verdaderos positivos.
+    * **TPR**:  Tasa de verdaderos positivos.
 
 * **LUIGI:** 
 
