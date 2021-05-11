@@ -163,7 +163,7 @@ class TestAequitas(marbles.core.TestCase):
         self.assertTrue(len(set(attributes)) == 3, msg = self.msg_att)
 
     def test_num_columns(self):
-        self.assertTrue(len(self.df.columns) == 6, msg = self.msg_col)
+        self.assertTrue(len(self.df.columns) == 5, msg = self.msg_col)
 
     def test_not_empty(self):
         self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)
