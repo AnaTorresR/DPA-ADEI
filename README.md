@@ -177,8 +177,6 @@ Las métricas consideradas en este proyecto serán:
 
    **FOR**: Nos interesa conocer si hay un sesgo hacia algún grupo de no ser seleccionado como etiqueta positiva.
 
-   **TPR**:  Tasa de verdaderos positivos.
-
 * **LUIGI:** 
 
  Se crearon dos módulos llamados _ingesta_task.py_, _almacenamiento_task.py_ ubicados en la paquetería `src/pipeline`. Estos módulos contienen las task llamadas _IngestaTask_ y _AlmacenamientoTask_ respectivamente. 
