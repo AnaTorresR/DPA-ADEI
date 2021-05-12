@@ -77,20 +77,30 @@ def fix_typos(typo):
     return string
 
 def imputations(df):
-	"""Imputations of missing data"""
-	df.facility_type.mask(df.facility_type.isna(), "other", inplace=True)
-	df.city.mask(df.city.isna(), "chicago", inplace=True)
-	df.state.mask(df.city.isna(), "il", inplace=True)
-	df.aka_name.mask(df.aka_name.isna(), df.dba_name, inplace=True)
-	df.violations.mask(df.violations.isna(), '0', inplace=True)
-	df.zip.mask(df.zip.isna(), '0', inplace=True)
-	return df
+    """Imputations of missing data"""
+    df.dba_name.mask(df.dba_name.isna(), 'No especificado', inplace=True)
+    df.aka_name.mask(df.aka_name.isna(), 'No especificado', inplace=True)
+    df.inspection_type.mask(df.inspection_type.isna(), 'No especificado', inplace=True)
+    df.risk.mask(df.risk.isna(), 'No especificado', inplace=True)
+    df.address.mask(df.address.isna(), 'No especificado', inplace=True)
+    df.inspection_id.mask(df.inspection_id.isna(), '0', inplace=True)
+    df.facility_type.mask(df.facility_type.isna(), "other", inplace=True)
+    df.city.mask(df.city.isna(), "chicago", inplace=True)
+    df.state.mask(df.state.isna(), "il", inplace=True)
+    #df.aka_name.mask(df.aka_name.isna(), df.dba_name, inplace=True)
+    df.violations.mask(df.violations.isna(), '0', inplace=True)
+    df.zip.mask(df.zip.isna(), '0', inplace=True)
+    return df
 
 def cleaning(pkl):
-	df = clean_column(pkl)
-	df = changeType_date(df)
-	df = lowercase(df)
-	df = imputations(df)
-	df['city'] = df.city.apply (lambda row: fix_typos(row))
-	df = df.drop('location', axis = 1)
-	return df
+    df = clean_column(pkl)
+    df = changeType_date(df)
+    df = lowercase(df)
+    df = imputations(df)
+    df['city'] = df.city.apply (lambda row: fix_typos(row))
+    df = df.drop('location', axis = 1)
+    df = df[['inspection_id', 'dba_name', 'aka_name', 'license_', 'facility_type',
+       'risk', 'address', 'city', 'state', 'zip', 'inspection_date',
+       'inspection_type', 'results', 'violations', 'latitude', 'longitude']]
+    return df
+
