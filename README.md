@@ -318,7 +318,7 @@ __Metadata Aequitas:__
 
 * **Pruebas Unitarias**
 
-Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura. 
+Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura o si se indica en el test de aequitas que el modelo es punitvo.
 
 + Test Ingesta y Test Almacenamiento:
      + Verifica si existe el archivo guardado en la carpeta temporal `temp`.
