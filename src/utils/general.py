@@ -4,6 +4,8 @@ import pandas as pd
 import psycopg2
 import boto3
 import numpy as np
+from datetime import date
+from datetime import timedelta
 from sklearn.model_selection import GridSearchCV
 #from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -13,6 +15,7 @@ from aequitas.bias import Bias
 from aequitas.fairness import Fairness
 from aequitas.plotting import Plot
 from aequitas.preprocessing import preprocess_input_df
+from src.utils.utils_notebook.train_test import train_test, train_test_original
 
 def read_yaml_file(yaml_file):
     """ load yaml cofigurations """
@@ -190,3 +193,33 @@ def aequitas(df):
     sesgo = sesgo[['attribute_name', 'attribute_value', 'for_disparity', 'fnr_disparity', 'tpr_disparity']]
 
     return sesgo
+
+
+def predictions(creds, model_key, date):
+
+    # Test
+    delta_date = date - timedelta(days=7)
+    df = select_semantic_features(creds, delta_date)
+    train_df, test_df = train_test(df)
+
+    # Loading model
+    modelo = load_s3_object(creds, model_key)
+
+    # Predictions
+    X_test = test_df.loc[:, test_df.columns != 'label']
+    y_test = test_df.label
+    modelo_predicciones = modelo.predict(X_test)
+    modelo_predicted_scores = modelo.predict_proba(X_test)
+    preds = pd.DataFrame(modelo_predicted_scores[:, 1], columns=['score'])
+    preds['label'] = preds['score'].apply(lambda x: '0' if x < 0.665264 else '1')
+
+    #Joining preds with original data
+    dfc = select_clean_features(creds, delta_date)
+    train_orig, test_orig = train_test_original(dfc)
+    data = pd.concat([test_orig, preds], axis = 1)
+    data = data[['inspection_id', 'dba_name', 'score', 'label']]
+    data['ground_truth'] = y_test
+    data['predictions_date'] = str(delta_date + timedelta(days=7))
+    data = data[['inspection_id', 'dba_name', 'ground_truth', 'score', 'label', 'predictions_date']]
+
+    return data

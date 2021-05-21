@@ -32,15 +32,15 @@ class EntrenamientoTask(luigi.Task):
             train_path = 's3://{}/{}/{}-{}-{}-train.pkl'. \
                 format(constants.bucket_name, constants.initial_path, self.year, self.month, self.day)
 
-            #test_path = 's3://{}/{}/{}-{}-{}-test.pkl'. \
-             #  format(constants.bucket_name, constants.initial_path, self.year, self.month, self.day)
+            test_path = 's3://{}/{}/{}-{}-{}-test.pkl'. \
+               format(constants.bucket_name, constants.initial_path, self.year, self.month, self.day)
 
         elif self.ingesta == 'consecutiva':
             train_path = 's3://{}/{}-{}-{}-{}-train.pkl'. \
                 format(constants.bucket_name, constants.concecutive_path, self.year, self.month, self.day)
 
-            #test_path = 's3://{}/{}-{}-{}-{}-test.pkl'. \
-            #    format(constants.bucket_name, constants.concecutive_path, self.year, self.month, self.day)
+            test_path = 's3://{}/{}-{}-{}-{}-test.pkl'. \
+                format(constants.bucket_name, constants.concecutive_path, self.year, self.month, self.day)
         else:
             print('No such type of ingestion')
 
@@ -59,3 +59,6 @@ class EntrenamientoTask(luigi.Task):
 
         with self.output().open('w') as train_file:
             pickle.dump(train_df, train_file)
+
+        ##with self.output().open('w') as test_file:
+          #  pickle.dump(test_df, test_file)

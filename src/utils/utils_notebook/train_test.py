@@ -4,7 +4,6 @@ from sklearn.preprocessing import OneHotEncoder
 def one_hot(data):
     ohe = OneHotEncoder(handle_unknown='ignore', categories= 'auto')
     categorical_cols = ['risk','facility_type', 'inspection_type']
-
     array_hot_encoded = ohe.fit_transform(data[categorical_cols]).toarray()
     column_name = ohe.get_feature_names(categorical_cols)
     data_hot_encoded = pd.DataFrame(array_hot_encoded, index=data.index, columns= column_name)
@@ -28,4 +27,6 @@ def train_test(data):
     df_train, df_test = split(df)
     return df_train, df_test
 
-
+def train_test_original(data):
+    df_train_origin, df_test_origin = split(data)
+    return df_train_origin, df_test_origin
