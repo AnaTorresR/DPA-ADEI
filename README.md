@@ -234,6 +234,7 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   psql -f sql/create_metadata_table.sql service=food
   psql -f sql/create_semantic_table.sql service=food
   psql -f sql/create_tests_table.sql service=food
+  psql -f sql/create_results_table.sql service=food
   ```
   
   O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
@@ -316,6 +317,13 @@ __Metadata Aequitas:__
        
     PYTHONPATH='.' luigi --module src.pipeline.aequitas_metadata_task AequitasMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
+__Predicciones:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.prediction_task PredictionTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
+    
+__Metadata Predicciones:__
+
+
 * **Pruebas Unitarias**
 
 Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura o si se indica en el test de aequitas que el modelo es punitvo.
@@ -347,6 +355,8 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que la tabla resultante no esté vacía.
      + Verifica que sólo se realice el análisis para fechas ya ocurridas.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
+
+* Test Predicciones:
 
  * **DAG**
  
