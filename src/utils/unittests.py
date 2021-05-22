@@ -179,7 +179,7 @@ class TestAequitas(marbles.core.TestCase):
         note = "Tu input: {}".format(self.model_type))
 
 
-class TestPrediction(marbles.core.TestCase):
+class TestPrediction(marbles.core.TestCase, mixins.BetweenMixins):
 
     def __init__(self, df, year, month, day, model_type):
         self.df = df
@@ -218,13 +218,13 @@ class TestPrediction(marbles.core.TestCase):
         self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)
 
     def test_null(self):
-        self.assertTrue(df.id_inspection.isna().sum() == 0, msg = self.msg_null,
+        self.assertTrue(self.df.id_inspection.isna().sum() == 0, msg = self.msg_null,
         note = "Columna: id_inspection")
-        self.assertTrue(df.score.isna().sum() == 0, msg = self.msg_null,
+        self.assertTrue(self.df.score.isna().sum() == 0, msg = self.msg_null,
         note = "Columna: score")
-        self.assertTrue(df.label.isna().sum() == 0, msg = self.msg_null,
+        self.assertTrue(self.df.label.isna().sum() == 0, msg = self.msg_null,
         note = "Columna: label")
-        self.assertTrue(df.ground_truth.isna().sum() == 0, msg = self.msg_null,
+        self.assertTrue(self.df.ground_truth.isna().sum() == 0, msg = self.msg_null,
         note = "Columna: ground_truth")
 
     def test_assist(self):
