@@ -322,8 +322,9 @@ __Predicciones:__
     PYTHONPATH='.' luigi --module src.pipeline.prediction_task PredictionTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd 
     
 __Metadata Predicciones:__
-
-
+     
+    PYTHONPATH='.' luigi --module src.pipeline.prediction_metadata_task PredictionMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+    
 * **Pruebas Unitarias**
 
 Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura o si se indica en el test de aequitas que el modelo es punitvo.
@@ -357,6 +358,13 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
 
 * Test Predicciones:
+     + Verifica que las etiquetas predichas sean únicamente 0 ó 1.
+     + Verifica que los scores predichos estén entre 0 y 1.
+     + Verifica que las etiquetas reales (ground truth) sean únicamente 0 ó 1.
+     + Verifica que el número de columnas en la tabla de predicciones sea exactamente 6.
+     + Verifica que la tabla de predicciones no esté vacía.
+     + Verifica que no existan valores nulos en las columnas de `id_inspection`, `score`, `label`, `ground_truth` en la tabla de predicciones.
+     + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
 
  * **DAG**
  
