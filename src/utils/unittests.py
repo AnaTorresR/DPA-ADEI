@@ -177,3 +177,56 @@ class TestAequitas(marbles.core.TestCase):
     def test_assist(self):
         self.assertTrue(self.model_type == 'assistive', msg = self. msg_assist,
         note = "Tu input: {}".format(self.model_type))
+
+
+class TestPrediction(marbles.core.TestCase):
+
+    def __init__(self, df, year, month, day, model_type):
+        self.df = df
+        self.year = year
+        self.month = month
+        self.day = day
+        self.model_type = model_type
+
+    msg_label = "La label predicha tiene que ser 0 ó 1."
+    msg_score = "El score predicho tiene que estar entre 0 y 1."
+    msg_ground = "La ground truth de la predicción tiene que ser 0 ó 1."
+    msg_col = "El número de columnas no coincide con datos anteriores."
+    msg_row = "La tabla results.predictions está vacía."
+    msg_null = "Existen valores nulos en al menos una columna."
+    msg_assist = "Nuestro modelo está pensado para utilizarse de manera asistiva."
+
+    def test_label(self):
+        good_labels = set([0,1])
+        pred_labels = set(self.df.label)
+        self.assertTrue(pred_labels.issubset(good_labels), msg = self.msg_label)
+
+    def test_score(self):
+        pred_scores = self.df.score.values
+        self.assertBetween(pred_scores.all(), strict=False, lower=0, upper=1,
+        msg = self.msg_score)
+
+    def test_ground(self):
+        good_ground = set([0,1])
+        table_ground = set(self.df.ground_truth)
+        self.assertTrue(table_ground.issubset(good_ground), msg = self.msg_ground)
+
+    def test_num_columns(self):
+        self.assertTrue(len(self.df.columns) == 6, msg = self.msg_col)
+
+    def test_not_empty(self):
+        self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)
+
+    def test_null(self):
+        self.assertTrue(df.id_inspection.isna().sum() == 0, msg = self.msg_null,
+        note = "Columna: id_inspection")
+        self.assertTrue(df.score.isna().sum() == 0, msg = self.msg_null,
+        note = "Columna: score")
+        self.assertTrue(df.label.isna().sum() == 0, msg = self.msg_null,
+        note = "Columna: label")
+        self.assertTrue(df.ground_truth.isna().sum() == 0, msg = self.msg_null,
+        note = "Columna: ground_truth")
+
+    def test_assist(self):
+        self.assertTrue(self.model_type == 'assistive', msg = self. msg_assist,
+        note = "Tu input: {}".format(self.model_type))
