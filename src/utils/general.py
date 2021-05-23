@@ -90,11 +90,29 @@ def select_clean_features(creds, date):
 
     con = get_db_conn(creds)
     q = """
-    select *
+    select
+       case when (inspection_id = 'nan') then '0' else inspection_id end as inspection_id,
+       dba_name,
+       aka_name,
+       license,
+       facility_type,
+       risk,
+       address,
+       city,
+       state,
+       zip,
+       inspection_date,
+       inspection_type,
+       results,
+       violations,
+       latitude,
+       longitude
     from
         clean.features
     where
         inspection_date >= '{}'
+    order by
+        inspection_date
     """.format(date)
 
     df = pd.read_sql(q, con)
@@ -117,6 +135,8 @@ def select_semantic_features(creds,date):
         semantic.features
     where
         inspection_date >= '{}'
+    order by 
+        inspection_date
     """.format(date)
 
     df = pd.read_sql(q, con)
@@ -231,9 +251,9 @@ def predictions(creds, model_key, date):
     dfc = select_clean_features(creds, delta_date)
     train_orig, test_orig = train_test_original(dfc)
     data = pd.concat([test_orig, preds], axis = 1)
-    data = data[['inspection_id', 'dba_name', 'score', 'label']]
+    data = data[['inspection_id', 'dba_name', 'license', 'inspection_date', 'score', 'label']]
     data['ground_truth'] = y_test
-    data['predictions_date'] = str(delta_date + timedelta(days=7))
-    data = data[['inspection_id', 'dba_name', 'ground_truth', 'score', 'label', 'predictions_date']]
+    data['predictions_date'] = str(date)
+    data = data[['inspection_id', 'dba_name', 'license', 'inspection_date', 'ground_truth', 'score', 'label', 'predictions_date']]
 
     return data

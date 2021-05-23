@@ -55,3 +55,4 @@ class TestPredictionTask(CopyToTable):
         r = [("unit test predicciones", date_ , 'Equipo 6')]
         for element in r:
             yield element
+

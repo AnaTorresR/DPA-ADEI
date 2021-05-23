@@ -21,7 +21,7 @@ class PredictionTask(CopyToTable):
     def requires(self):
        return {
         'FE_metadata_task' : FEMetadataTask(self.ingesta, self.year, self.month, self.day),
-        #'SeleccionModeloTask': SeleccionModeloTask(self.ingesta, self.year, self.month, self.day)
+        'SeleccionModeloTask': SeleccionModeloTask(self.ingesta, self.year, self.month, self.day)
          }
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
@@ -34,8 +34,10 @@ class PredictionTask(CopyToTable):
 
     table = 'results.predictions'
 
-    columns = [("ID_INSPECTION",  "VARCHAR"),
+    columns = [("ID_INSPECTION",  "INTEGER"),
                 ("DBA_NAME", "VARCHAR"),
+                ("LICENSE", "INTEGER"),
+                ("INSPECTION_DATE", "TIMESTAMP WITH TIME ZONE"),
                 ("GROUND_TRUTH", "SMALLINT"),
                 ("SCORE", "NUMERIC"),
                 ("LABEL", "INTEGER"),
