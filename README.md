@@ -361,7 +361,7 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que las etiquetas predichas sean únicamente 0 ó 1.
      + Verifica que los scores predichos estén entre 0 y 1.
      + Verifica que las etiquetas reales (ground truth) sean únicamente 0 ó 1.
-     + Verifica que el número de columnas en la tabla de predicciones sea exactamente 6.
+     + Verifica que el número de columnas en la tabla de predicciones sea exactamente 8.
      + Verifica que la tabla de predicciones no esté vacía.
      + Verifica que no existan valores nulos en las columnas de `id_inspection`, `score`, `label`, `ground_truth` en la tabla de predicciones.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
