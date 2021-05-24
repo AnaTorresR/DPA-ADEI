@@ -133,12 +133,12 @@ Para continuar con los siguientes pasos del proyecto es necesario contar con una
 
 Una vez que tengas tu RDS, al archivo `credentials.yaml` que creamos anteriormente, es necesario agregarle también las credenciales de nuestra base de datos debajo de las credenciales anteriores, agrégalas de la siguiente manera:
 
-   db:
-    user: "nombre-de-tu-usuario"
-    pass: "contraseña-de-tu-usuario"
-    host: "url-de-tu-base-de-datos"
-    port: "5432"
-    db: "nombre-de-tu-base-de-datos"
+      db:
+       user: "nombre-de-tu-usuario"
+       pass: "contraseña-de-tu-usuario"
+       host: "url-de-tu-base-de-datos"
+       port: "5432"
+       db: "nombre-de-tu-base-de-datos"
 
  Además, deberás de crear el archivo `.pg_service.conf` en el `/home` con las siguientes líneas:
 
