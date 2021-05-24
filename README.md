@@ -325,8 +325,16 @@ __Predicciones:__
     
 __Metadata Predicciones:__
      
-    PYTHONPATH='.' luigi --module src.pipeline.prediction_metadata_task PredictionMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
+    PYTHONPATH='.' luigi --module src.pipeline.prediction_metadata_task PredictionMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
     
+__Almacenamiento API:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_api_task AlmacenamientoApiTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
+
+__Monitoreo Modelo:__
+
+    PYTHONPATH='.' luigi --module src.pipeline.monitoreo_modelo_task MonitoreoModeloTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
+
 * **Pruebas Unitarias**
 
 Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline. Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura o si se indica en el test de aequitas que el modelo es punitvo.
