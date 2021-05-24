@@ -376,7 +376,6 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que no existan valores nulos en las columnas de `id_inspection`, `score`, `label`, `ground_truth` en la tabla de predicciones.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
 
- * **DAG**
- 
+ * **DAG** 
   ![DAG](img/checkpoint-7.png)
 
