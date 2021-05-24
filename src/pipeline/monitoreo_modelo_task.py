@@ -35,7 +35,7 @@ class MonitoreoModeloTask(CopyToTable):
                 ("FACILITY_TYPE", "VARCHAR"),
                 ("RISK", "VARCHAR"),
                 ("ADDRESS", "VARCHAR"),
-                ("ZIP", "INTEGER"),
+#                ("ZIP", "INTEGER"),
                 ("INSPECTION_DATE", "TIMESTAMP WITH TIME ZONE"),
                 ("INSPECTION_TYPE", "VARCHAR"),
                 ("VIOLATIONS", "VARCHAR"),
