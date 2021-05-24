@@ -235,6 +235,8 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
   psql -f sql/create_semantic_table.sql service=food
   psql -f sql/create_tests_table.sql service=food
   psql -f sql/create_results_table.sql service=food
+  psql -f sql/create_api_table.sql service=food
+  psql -f sql/create_monitoring_table.sql service=food
   ```
   
   O puedes copiar y pegar el contenido de los scripts dentro de tu base de datos. Recuerda que para conectarte a tu base de datos debes correr:
@@ -361,7 +363,7 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que las etiquetas predichas sean únicamente 0 ó 1.
      + Verifica que los scores predichos estén entre 0 y 1.
      + Verifica que las etiquetas reales (ground truth) sean únicamente 0 ó 1.
-     + Verifica que el número de columnas en la tabla de predicciones sea exactamente 8.
+     + Verifica que el número de columnas en la tabla de predicciones sean exactamente 15.
      + Verifica que la tabla de predicciones no esté vacía.
      + Verifica que no existan valores nulos en las columnas de `id_inspection`, `score`, `label`, `ground_truth` en la tabla de predicciones.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
