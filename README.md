@@ -204,7 +204,8 @@ __------------->__ Por la forma en la que está construida la task de ingesta co
  **Almacenamiento**
 
  _Almacenamiento Task_
-      PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta <tipo de ingesta> --year aaaa --month mm --day dd
+ 
+       PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta <tipo de ingesta> --year aaaa --month mm --day dd
 
 _Metadata Almacenamiento:_
 
