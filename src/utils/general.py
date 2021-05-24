@@ -251,9 +251,13 @@ def predictions(creds, model_key, date):
     dfc = select_clean_features(creds, delta_date)
     train_orig, test_orig = train_test_original(dfc)
     data = pd.concat([test_orig, preds], axis = 1)
-    data = data[['inspection_id', 'dba_name', 'license', 'inspection_date', 'score', 'label']]
+    data = data[['inspection_id', 'dba_name', 'license', 'facility_type', 'risk', 'address', 'zip', 'inspection_date', 'inspection_type', 'violations', 'score', 'label']]
     data['ground_truth'] = y_test
     data['predictions_date'] = str(date)
-    data = data[['inspection_id', 'dba_name', 'license', 'inspection_date', 'ground_truth', 'score', 'label', 'predictions_date']]
+    data['model'] = str(modelo)
+    data = data[['inspection_id', 'dba_name', 'license', 'facility_type', 'risk', 'address',
+                 'zip', 'inspection_date', 'inspection_type', 'violations', 'ground_truth',
+                 'score', 'label', 'predictions_date', 'model']]
 
     return data
+

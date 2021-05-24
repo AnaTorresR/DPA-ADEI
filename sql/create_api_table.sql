@@ -2,11 +2,11 @@ set timezone = 'America/Mexico_City';
 
 set role postgres;
 
-create schema results;
+create schema api;
 
-DROP TABLE IF EXISTS results.predictions;
+DROP TABLE IF EXISTS api.scores;
 
-CREATE TABLE results.predictions(
+CREATE TABLE api.scores(
 id_inspection integer,
 dba_name varchar,
 license integer,
@@ -23,6 +23,4 @@ label integer,
 predictions_date timestamp with time zone,
 model varchar
 );
-
-
 

@@ -2,11 +2,9 @@ set timezone = 'America/Mexico_City';
 
 set role postgres;
 
-create schema results;
+DROP TABLE IF EXISTS monitoring;
 
-DROP TABLE IF EXISTS results.predictions;
-
-CREATE TABLE results.predictions(
+CREATE TABLE monitoring(
 id_inspection integer,
 dba_name varchar,
 license integer,
@@ -23,6 +21,3 @@ label integer,
 predictions_date timestamp with time zone,
 model varchar
 );
-
-
-

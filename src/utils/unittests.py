@@ -212,7 +212,7 @@ class TestPrediction(marbles.core.TestCase, mixins.BetweenMixins):
         self.assertTrue(table_ground.issubset(good_ground), msg = self.msg_ground)
 
     def test_num_columns(self):
-        self.assertTrue(len(self.df.columns) == 8, msg = self.msg_col)
+        self.assertTrue(len(self.df.columns) == 15, msg = self.msg_col)
 
     def test_not_empty(self):
         self.assertTrue(len(self.df.index) > 0, msg = self.msg_row)

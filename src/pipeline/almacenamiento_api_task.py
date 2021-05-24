@@ -4,14 +4,13 @@ import luigi.contrib.s3
 from datetime import date
 from datetime import timedelta
 from luigi.contrib.postgres import CopyToTable
-from src.pipeline.feature_engineering_metadata_task import FEMetadataTask
-from src.pipeline.seleccion_modelo_task import SeleccionModeloTask
-from src.utils.general import load_s3_object, predictions, get_db_credentials
+from src.pipeline.prediction_metadata_task import PredictionMetadataTask
+from src.utils.general import load_s3_object, predictions, get_db_credentials, select_predictions
 from src.utils import constants
 
-# PYTHONPATH='.' luigi --module src.pipeline.prediction_task PredictionTask --ingesta consecutiva --year 2021 --month 05 --day 21 --local-scheduler
+# PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_api_task AlmacenamientoApiTask --ingesta consecutiva --year 2021 --month 05 --day 23 --local-scheduler
 
-class PredictionTask(CopyToTable):
+class AlmacenamientoApiTask(CopyToTable):
     ingesta = luigi.Parameter()
     year = luigi.Parameter()
     month = luigi.Parameter()
@@ -20,8 +19,7 @@ class PredictionTask(CopyToTable):
 
     def requires(self):
        return {
-        'FE_metadata_task' : FEMetadataTask(self.ingesta, self.year, self.month, self.day),
-        'SeleccionModeloTask': SeleccionModeloTask(self.ingesta, self.year, self.month, self.day)
+        'PredictionMetadataTask': PredictionMetadataTask(self.ingesta, self.year, self.month, self.day, self.model_type)
          }
 
     credentials = get_db_credentials('conf/local/credentials.yaml')
@@ -32,7 +30,7 @@ class PredictionTask(CopyToTable):
     port=credentials['port']
     database=credentials['db']
 
-    table = 'results.predictions'
+    table = 'api.scores'
 
     columns = [("ID_INSPECTION",  "INTEGER"),
                 ("DBA_NAME", "VARCHAR"),
@@ -52,20 +50,12 @@ class PredictionTask(CopyToTable):
 
     def rows(self):
 
-        if self.ingesta == 'historica':
-            model_key = '{}-{}-{}-{}-modelo.pkl'.format(constants.initial_path, self.year, self.month, self.day)
-
-        elif self.ingesta == 'consecutiva':
-            model_key = '{}-{}-{}-{}-modelo.pkl'.format(constants.concecutive_path, self.year, self.month, self.day)
-
-        else:
-            print('No such type of ingestion')
-
         creds_file = 'conf/local/credentials.yaml'
 
         today = date.today()
+        delta_date = today - timedelta(days=7)
 
-        preds = predictions(creds_file, model_key, today)
+        preds = select_predictions(creds_file, delta_date)
 
         r = preds.to_records(index = False)
 
