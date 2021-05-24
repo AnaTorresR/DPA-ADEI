@@ -181,19 +181,19 @@ Y abre la interfaz de luigi escribiendo localhost:<puerto-libre-en-tu-computador
 
 En otra terminal, para poder ejecutar estos tasks deberás ubicarte en la raíz de este proyecto y ejecutar los siguientes comandos con tu pyenv activado:
 
- *Ingesta*
+ **Ingesta**
 
- __Ingesta histórica:__
+ _Ingesta histórica:_
 
       PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta historica --year aaaa --month mm --day dd
 
- __Ingesta consecutiva:__
+ _Ingesta consecutiva:_
 
     PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta consecutiva --year aaaa --month mm --day dd
 
-__Metadata Ingesta:__
+_Metadata Ingesta:_
 
-   PYTHONPATH='.' luigi --module src.pipeline.ingesta_metadata_task IngestaMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd  
+    PYTHONPATH='.' luigi --module src.pipeline.ingesta_metadata_task IngestaMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd  
 
 Este primer task obtiene los datos de la API de Food Inspections y son guardados de manera local en formato .pkl en la ruta `temp/data-product-architecture-equipo-6/ingestion/ 'la ingesta que corriste'/ 'la ingesta que corriste'-inspections-aaaa-mm-dd.pkl`. Esta carpeta es generada de manera automática por este task.
 
@@ -201,26 +201,26 @@ La ingesta consecutiva se estará ejecutando semanalmente, tomará la fecha del 
 
 __------------->__ Por la forma en la que está construida la task de ingesta consecutiva, para evitar la duplicación u omisión de observaciones. Se debe ejecutar cada 7 días a la misma hora, o si es la primera consecutiva, 7 días después de la histórica.      
 
- *Almacenamiento*
+ **Almacenamiento**
 
- __Almacenamiento Task__
-    PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta <tipo de ingesta> --year aaaa --month mm --day dd
+ _Almacenamiento Task_
+      PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_task AlmacenamientoTask --ingesta <tipo de ingesta> --year aaaa --month mm --day dd
 
-__Metadata Almacenamiento:__
+_Metadata Almacenamiento:_
 
-    PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_metadata_task AlmacenamientoMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd  
+       PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_metadata_task AlmacenamientoMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd  
 
 Este task guarda el .pkl generado en el task anterior en tu bucket s3 en la siguiente ruta `ingestion/initial/historic-inspections-aaaa-mm-dd.pkl` si corriste ingesta histórica y `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd.pkl` si corriste ingesta consecutiva.
 
- *Pre-processing / Cleaning*
+ **Pre-processing / Cleaning**
 
  + _cleaning_task.py_ : Contiene el task _CleaningTask_ que lee los datos resultantes del proceso de ingesta del bucket de s3, les hace una serie de transformaciones de limpieza y finalmente, sube los datos limpios a la base de datos a la tabla de `features` dentro del esquema `clean`.
 
- __Limpieza Task:__
+ _Limpieza Task:_
 
       PYTHONPATH='.' luigi --module src.pipeline.cleaning_task CleaningTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
-__Metadata Limpieza:__
+_Metadata Limpieza:_
 
       PYTHONPATH='.' luigi --module src.pipeline.cleaning_metadata_task CleaningMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
@@ -230,15 +230,15 @@ Si deseas ver los datos limpios conéctate a tu base de datos como se mencionó 
 
 Esta tabla fue creada gracias al script [sql/create_clean_table.sql](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/sql/create_clean_table.sql)
 
-*Feature Engineering*
+**Feature Engineering**
 
  + _feature_engineering_task.py_ : Incluye el task _FETask_ la cual lee los datos limpios de `clean.features` y realiza las transformaciones necesarias para la ingeniería de características para después subir los datos transformados a la tabla `features` del esquema `semantic`.
 
- __Feature Engineering Task:__
+ _Feature Engineering Task:_
 
       PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_task FETask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
- __Metadata Feature Engineering:__
+ _Metadata Feature Engineering:_
 
       PYTHONPATH='.' luigi --module src.pipeline.feature_engineering_metadata_task FEMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
@@ -248,33 +248,32 @@ Si deseas ver los datos de la tabla semantic.features ejecuta el siguiente coman
 
 Esta tabla fue creada gracias al script [sql/create_semantic_table.sql.sql](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/sql/create_semantic_table.sql)
 
-
-*Entrenamiento*
+**Entrenamiento**
 
 + _entrenamiento_task.py_: Incluye el task _EntrenamientoTask_ el cual lee los datos de la tabla semantic.features de una semana anterior hasta la fecha en la que se está corriendo este task. Transforma los datos para poder modelarlos y son guardados en el bucket s3 en la siguiente ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd-train.pkl` si corriste ingesta consecutiva y `ingestion/initial/historic-inspections-aaaa-mm-dd-train.pkl` si corriste ingesta histórica.
 
-__Entrenamiento:__
+_Entrenamiento:_
 
     PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_task EntrenamientoTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
-__Metadata Entrenamiento:__
+_Metadata Entrenamiento:_
 
     PYTHONPATH='.' luigi --module src.pipeline.entrenamiento_metadata_task EntrenamientoMetadataTask --ingesta <tipo-de-ingesta>  --year aaaa --month mm --day dd
 
 
-*Selección del Modelo*
+**Selección del Modelo**
 
 + _seleccion_modelo_task.py_: Incluye el task _SeleccionModeloTask_ el cual lee el .pkl de entrenamiento previamente guardado por el task anterior en el bucket y entrena 12 diferentes bosques aleatorios con la función `modeling(df)` que se encuentra en el script [src/utils/general.py](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/src/utils/general.py). El mejor modelo es guardado en formato .pkl el el bucker s3 bajo la siguiente ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd-modelo.pkl` si corriste ingesta consecutiva y `ingestion/initial/historic-inspections-aaaa-mm-dd-modelo.pkl` si corriste ingesta histórica.
 
-__Selección Modelo:__
+_Selección Modelo:_
 
     PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_task SeleccionModeloTask --ingesta <tipo-de-ingesta>  --year aaaa --month mm --day dd
 
-__Metadata Selección Modelo:__
+_Metadata Selección Modelo:_
 
     PYTHONPATH='.' luigi --module src.pipeline.seleccion_modelo_metadata_task SeleccionModeloMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
-*Aequitas*
+**Aequitas**
 
 Este proyecto es considerado **asistivo**, debido a que los dueños de los establecimientos podrán observar a través de nuestra API (lista para el 25 de mayo) si su establecimiento pasará o no la inspección, por lo que podrán tomar las medidas necesarias para que el establecimiento pase la inspección el día que se les asigne.
 
@@ -294,19 +293,19 @@ Las métricas consideradas en este proyecto serán:
 
    **FOR**: Nos interesa conocer si hay un sesgo hacia algún grupo de no ser seleccionado como etiqueta positiva.
 
-Para ejecutar este task corre el siguiente comando en la raíz del repositorio:
-
+ _Aequitas:_
+ 
     PYTHONPATH='.' luigi --module src.pipeline.aequitas_task AequitasTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
 O puedes omitir el parámetro `model-type` pues nuestro pipeline tiene el valor _assistive_ por default.
 
-__Metadata Aequitas:__
+_Metadata Aequitas:_
 
     PYTHONPATH='.' luigi --module src.pipeline.aequitas_metadata_task AequitasMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
 Esta tabla de métricas son guardadas en el bucket s3 bajo la ruta `ingestion/consecutive/consecutive-inspections-aaaa-mm-dd-aequitas.pkl` si corriste ingesta consecutiva y `ingestion/initial/historic-inspections-aaaa-mm-dd-aequitas.pkl` si corriste ingesta histórica.
 
-*Predicciones*
+**Predicciones**
 
 + _prediction_task.py_: está conformado por el task _PredictionTask_ el cual requiere de los datos generados en el task de feature engineering así como la selección del modelo previamente guardado en el bucket s3.
 
@@ -316,30 +315,29 @@ Si deseas ver los datos que se encuentran en la tabla, ejecuta el siguiente coma
 
      select * from results.predictions;
 
-__Predicciones:__
+_Predicciones:_
 
     PYTHONPATH='.' luigi --module src.pipeline.prediction_task PredictionTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd
 
-__Metadata Predicciones:__
+_Metadata Predicciones:_
 
     PYTHONPATH='.' luigi --module src.pipeline.prediction_metadata_task PredictionMetadataTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
 
 Todos estos módulos mencionados tienen asociados tasks de Metadata, los cuales se encargan de escribir la metadata relevante de cada una de sus correspondientes tareas en la tabla de `metadata` en la base de datos. Esta metadata relevante incluye: tipo de task, tipo de ingesta, fecha de ejecución y autor.
 
-*Almacenamiento API y Monitoreo Modelo*
+**Almacenamiento API y Monitoreo Modelo**
 
 Estos últimos tasks generan las tablas `api.scores` y `monitoring` las cuales son similares a la tabla `results.predictions`.
 La razón de estas dos nuevas tablas es por que queremos que el pipeline de predicciones y el monitoreo del modelo así como la API funcionen de manera independiente.
 
-__Almacenamiento API:__
+_Almacenamiento API:_
 
     PYTHONPATH='.' luigi --module src.pipeline.almacenamiento_api_task AlmacenamientoApiTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
-__Monitoreo Modelo:__
+_Monitoreo Modelo:_
 
     PYTHONPATH='.' luigi --module src.pipeline.monitoreo_modelo_task MonitoreoModeloTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
-
 
 *Pruebas Unitarias*
 
