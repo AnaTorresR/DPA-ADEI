@@ -278,3 +278,9 @@ def predictions(creds, model_key, date):
     return data
 
 
+def get_db_conn_sql_alchemy(credentials_file):
+    creds = read_yaml_file(credentials_file)['db']
+    # postgresql://username:password@server/db
+    db_conn_str = "postgresql://{}:{}@{}:{}/{}".format(creds['user'], creds['pass'], creds['host'],
+                                                       creds['port'], creds['db'])
+    return db_conn_str
