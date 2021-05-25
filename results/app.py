@@ -24,32 +24,52 @@ from
 c = """
     select
 	risk,
+        label,
     count
         (*)
     from
         monitoring
     group by
-        risk
+        risk, label
 """
 
 l = """
     select
         facility_type,
+        label,
     count
         (*)
     from
         monitoring
     group by
-        facility_type
+        facility_type, label
+"""
+
+i = """
+    select
+       inspection_type,
+       label,
+       count(*)
+    from
+       monitoring
+    group by
+       inspection_type, label
 """
 
 df = pd.read_sql(q, conn)
 df2 = pd.read_sql(c, conn)
 df3 = pd.read_sql(l, conn)
+df4 = pd.read_sql(i, conn)
 
-fig2 = px.bar(df2, x = "risk", y = "count", barmode = "group")
-fig3 = px.bar(df3, x = "facility_type", y = "count", barmode = "group")
+df2['label'] = df2['label'].astype('str')
+df3['label'] = df3['label'].astype('str')
+df4['label'] = df4['label'].astype('str')
+
+fig2 = px.bar(df2, x = "risk", y = "count", color = "label", barmode = "group")
+fig3 = px.bar(df3, x = "facility_type", y = "count", color = "label", barmode = "group")
+fig4 = px.bar(df4, x= "inspection_type", y="count", color = "label", barmode = "group")
 fig = px.histogram(df, x="score")
+
 
 app.layout = html.Div(children = [
     html.H1(
@@ -85,6 +105,13 @@ dcc.Graph(
     figure = fig3
   ),
 
+html.Div(children = '4) Conteos por tipo de inspección:'),
+
+dcc.Graph(
+    id = 'example-graph-5',
+    figure = fig4
+  ),
+
 html.Br(),
 html.Br(),
 html.Br()
@@ -92,3 +119,4 @@ html.Br()
 
 if __name__ == '__main__':
   app.run_server(debug = True)
+
