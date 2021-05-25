@@ -401,7 +401,8 @@ Ahora dirígete a la ruta `infrastructure/api` donde se encuentra el script [api
              flask run --host=0.0.0.0
  
 Como el servicio de flask se está ejecutando en bastión, para poder acceder a la api deberás realizar un portforwarding en una segunda terminal de la siguiente manera: 
-             ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:5000 tu-usuario@url-de-tu-bastion
+ 
+              ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:5000 tu-usuario@url-de-tu-bastion
  
  Ahora, en tu navegador escribe `localhost:<puerto-libre-en-tu-computadora>` y así es como podrás accesar a nuestra api.
  
