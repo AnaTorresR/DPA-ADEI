@@ -20,31 +20,74 @@ from
     monitoring
     """
 
-df = pd.read_sql(q, conn)
 
-#fig = px.bar(df, x = "Indicator", y = "Cases", color = "Country", barmode = "group")
+c = """
+    select
+	risk,
+    count
+        (*)
+    from
+        monitoring
+    group by
+        risk
+"""
+
+l = """
+    select
+        facility_type,
+    count
+        (*)
+    from
+        monitoring
+    group by
+        facility_type
+"""
+
+df = pd.read_sql(q, conn)
+df2 = pd.read_sql(c, conn)
+df3 = pd.read_sql(l, conn)
+
+fig2 = px.bar(df2, x = "risk", y = "count", barmode = "group")
+fig3 = px.bar(df3, x = "facility_type", y = "count", barmode = "group")
 fig = px.histogram(df, x="score")
 
-app.layout = html.Div(style = {
-  'backgroundColor': '#111111'
-}, children = [
+app.layout = html.Div(children = [
     html.H1(
-    children = 'Hello Dash',
+    children = 'Monitoreo de modelos',
     style = {
-      'textAlign': 'center',
-      'color': '#7FDBFF'
+      'textAlign': 'center'
     }
   ),
 
-    html.Div(children = 'Dash: Python based web framework for interactive data visualization.', style = {
-    'textAlign': 'center',
-    'color': '#7FDBFF'
-  }),
+    html.Br(),
+
+    html.Div(children = '1) Histograma de los scores del modelo:'),
+
 
     dcc.Graph(
     id = 'example-graph-2',
     figure = fig
-  )
+  ),
+
+html.Div(children = '2) Conteos por tipo de riesgo:'),
+
+
+dcc.Graph(
+    id = 'example-graph-3',
+    figure = fig2
+  ),
+
+html.Div(children = '3) Conteos por tipo de establecimiento:'),
+
+
+dcc.Graph(
+    id = 'example-graph-4',
+    figure = fig3
+  ),
+
+html.Br(),
+html.Br(),
+html.Br()
 ])
 
 if __name__ == '__main__':
