@@ -340,7 +340,7 @@ _Monitoreo Modelo:_
 
     PYTHONPATH='.' luigi --module src.pipeline.monitoreo_modelo_task MonitoreoModeloTask --ingesta <tipo-de-ingesta> --year aaaa --month mm --day dd --model-type assistive
 
-*Pruebas Unitarias*
+**Pruebas Unitarias**
 
 Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas del pipeline (excepto Almacenamiento Api y Monitoreo Modelo). Estas pruebas tienen el objetivo de verificar la integridad de los datos que ingestamos y que estos sean congruentes con los datos anteriores, para asegurar que si alguna tarea falla no sea por los datos si no por la estructura de nuestros pipelines. Estas pruebas unitarias también fallan si se intenta ingestar con una fecha futura o si se indica en el test de aequitas que el modelo es punitvo.
 
@@ -381,7 +381,7 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que no existan valores nulos en las columnas de `id_inspection`, `score`, `label`, `ground_truth` en la tabla de predicciones.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
 
- *API*
+ **API**
  
  Para poder ejecutar nuestra API en la raíz de repositorio ejecuta el siguiente comando:
  
@@ -403,15 +403,27 @@ Ahora dirígete a la ruta `infrastructure/api` donde se encuentra el script [api
 Como el servicio de flask se está ejecutando en bastión, para poder acceder a la api deberás realizar un portforwarding en una segunda terminal de la siguiente manera: 
              ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:5000 tu-usuario@url-de-tu-bastion
  
- Ahora, en tu navegador escribe localhost:<puerto-libre-en-tu-computadora> y así es como podrás accesar a nuestra api.
+ Ahora, en tu navegador escribe `localhost:<puerto-libre-en-tu-computadora>` y así es como podrás accesar a nuestra api.
  
  Esta api tiene dos endpoints llamados `one_prediction` el cual recibe como parámetro el número de la licencia del establecimiento. Este endpoint te regresa todas las predicciones que existen de este estblecimiento hasta el momento de la consulta y `date_prediction`
  que recibe como parámetro la fecha en las que fueron creadas las predicciones, el formato de este parámetro es `aaaa-mm-dd`. Este endpoint te regresa todas las predicciones de todos los establecimientos de la fecha consultada de manera ascendente.
  
- *Dash*
+ **Dash**
  
+ Se creó un dashboard con ayuda de las paqueterías `dash` y `plotly` el cual contiene las siguientes gráficas:
+ 
+ * Histograma de los scores
+ *
+ 
+ Para poder inicializar este dashboard ubícate en la ruta `results/`, ahí encontrarás el script [app.py](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/results/app.py) que crea nuestro dashboard y ejecuta primero el siguiente comando
+ 
+              python app.py
+ 
+ Posteriormente para poder visualizarlo deberás realizar el siguiente portforwarding en una nueva terminal de la siguiente manera:
  
              ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:8050 tu-usuario@url-de-tu-bastion
 
+ En tu navegador escribe `localhost:<puerto-libre-en-tu-computadora>` y así es como podrás ver nuestro monitoreo de modelo.
+ 
  * **DAG**
 ![DAG](img/checkpoint-7.png)
