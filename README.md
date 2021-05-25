@@ -175,7 +175,7 @@ Los tasks creados para este proyecto se encuentran en la ruta `src/pipeline`.
 
 En una terminal activa tu pyenv y ejecuta el comando `luigid`, posteriormente en tu navegador escribe lo siguiente: `localhost:8082`, así podrás ver la DAG de tus tasks. O, si lo estás corriendo desde tu bastión, realiza un port fordwarding de la siguiente manera:
 
-    ssh -i ~/.ssh/id_rsa -NL localhost:<puerto-libre-en-tu-computadora>:localhost:8082 tu-usuario@url-de-tu-bastion
+    ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:8082 tu-usuario@url-de-tu-bastion
 
 Y abre la interfaz de luigi escribiendo localhost:<puerto-libre-en-tu-computadora> en tu navegador.
 
@@ -380,6 +380,38 @@ Se crearon pruebas unitarias enfocadas a los datos para cada una de las tareas d
      + Verifica que la tabla de predicciones no esté vacía.
      + Verifica que no existan valores nulos en las columnas de `id_inspection`, `score`, `label`, `ground_truth` en la tabla de predicciones.
      + Verifica que el modelo sea de tipo asisitivo con el parámetro ``model-type``.
+
+ *API*
+ 
+ Para poder ejecutar nuestra API en la raíz de repositorio ejecuta el siguiente comando:
+ 
+              export PYTHONPATH=$PWD
+ Para verificar que la variable `PYTHONPATH` hace referencia a la raíz de este repositorio deberás ejecutrar el comando:
+ 
+              echo $PYTHONPATH
+ 
+Ahora dirígete a la ruta `infrastructure/api` donde se encuentra el script [api_food_inspections.py](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/infrastructure/api/api_food_inspections.py) y deberás ejecutar las siguientes instrucciones para levantar el servicio de flask y que la api funcione:
+ 
+             export FLASK_APP=api_food_inspections.py
+             
+             # Comprobación
+             echo $FLASK_APP
+ 
+             # Correr la api
+             flask run --host=0.0.0.0
+ 
+Como el servicio de flask se está ejecutando en bastión, para poder acceder a la api deberás realizar un portforwarding en una segunda terminal de la siguiente manera: 
+             ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:5000 tu-usuario@url-de-tu-bastion
+ 
+ Ahora, en tu navegador escribe localhost:<puerto-libre-en-tu-computadora> y así es como podrás accesar a nuestra api.
+ 
+ Esta api tiene dos endpoints llamados `one_prediction` el cual recibe como parámetro el número de la licencia del establecimiento. Este endpoint te regresa todas las predicciones que existen de este estblecimiento hasta el momento de la consulta y `date_prediction`
+ que recibe como parámetro la fecha en las que fueron creadas las predicciones, el formato de este parámetro es `aaaa-mm-dd`. Este endpoint te regresa todas las predicciones de todos los establecimientos de la fecha consultada de manera ascendente.
+ 
+ *Dash*
+ 
+ 
+             ssh -i ~/.ssh/<tu_llave> -NL localhost:<puerto-libre-en-tu-computadora>:localhost:8050 tu-usuario@url-de-tu-bastion
 
  * **DAG**
 ![DAG](img/checkpoint-7.png)
