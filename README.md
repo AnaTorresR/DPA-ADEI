@@ -413,7 +413,9 @@ Como el servicio de flask se está ejecutando en bastión, para poder acceder a 
  Se creó un dashboard con ayuda de las paqueterías `dash` y `plotly` el cual contiene las siguientes gráficas:
  
  * Histograma de los scores
- *
+ * Barplot por tipo de riesgo según su etiqueta asignada.
+ * Barplot por tipo de establecimiento según su etiqueta asignada.
+ * Barplot por tipo de inspección según su etiqueta asignada.
  
  Para poder inicializar este dashboard ubícate en la ruta `results/`, ahí encontrarás el script [app.py](https://github.com/AnaTorresR/DPA-food_inspections/blob/main/results/app.py) que crea nuestro dashboard y ejecuta primero el siguiente comando
  
